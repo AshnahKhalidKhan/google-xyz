@@ -17,3 +17,4 @@ git push origin <branch name> -> pushes all commits to the branch (in our case, 
 #### Other random thoughts I get while working on this:
 - I have realized when I first learn things, I need to watch the same videos multiple times sometimes before I understand them. What a roadblocker for progress, isn't it?
 - I just got an email from HR... I need to commit this and take a moment to reflect on everything. This is huge.
+- So, I am back. Need to fix this git not committing issue. Let's see what I can do.
