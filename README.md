@@ -13,8 +13,12 @@ git status -> tells me the branch I am currently in
 git add . -> add all changes (that is what the dot in the end is for) to the Git staging area; it allows you to select which changes you want to include in your next commit. Without using git add, no changes would be recorded in the commit.
 git commit -m "descriptive commit message" -> basically the actual command that commits all changes to the repository
 git push origin <branch name> -> pushes all commits to the branch (in our case, branch name will be 'main'); basically updates the branch with all commits
+- So, I am back. Need to fix this git not committing issue. Let's see what I can do.
+- I fixed the git not committing issue! Had to generate a Personal Access Token for this laptop. I think I should include the steps here, but maybe if I make that many projects, I won't need to remember (???) Who knows? Let's take things one step at a time.
+- Fixing the git not committing issue:
+(On laptop) Windows Credential Manager > Windows Credentials > git:https://github.com > Remove > (On github.com website) Profile > Settings > Developer Settings > Enter all details and give all permissions > Generate Token > Copy and save somewhere > (On laptop) Open the terminal on VS Code > git push origin main > (pop-up) Token > Enter token you just copied > OK
 
 #### Other random thoughts I get while working on this:
 - I have realized when I first learn things, I need to watch the same videos multiple times sometimes before I understand them. What a roadblocker for progress, isn't it?
 - I just got an email from HR... I need to commit this and take a moment to reflect on everything. This is huge.
-- So, I am back. Need to fix this git not committing issue. Let's see what I can do.
+
