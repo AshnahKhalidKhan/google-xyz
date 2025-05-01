@@ -18,6 +18,10 @@ git push origin <branch name> -> pushes all commits to the branch (in our case, 
 - I fixed the git not committing issue! Had to generate a Personal Access Token for this laptop. I think I should include the steps here, but maybe if I make that many projects, I won't need to remember (???) Who knows? Let's take things one step at a time.
 - Fixing the git not committing issue:
 (On laptop) Windows Credential Manager > Windows Credentials > git:https://github.com > Remove > (On github.com website) Profile > Settings > Developer Settings > Enter all details and give all permissions > Generate Token > Copy and save somewhere > (On laptop) Open the terminal on VS Code > git push origin main > (pop-up) Token > Enter token you just copied > OK
+- Yeah so I'm coming back to this line after the previous line after I discovered I was committing with the wrong author identity. To fix this, just to your terminal and enter these two commands with your primary GitHub email and name:
+git config --global user.name "Your Name"
+git config --global user.email "your-email@example.com"
+After that, you can go about committing this normally as you would.
 - I was trying to choose between using React or VueJS for this project. Honestly, I don't understand what's going on. The benefits of the two? I will have to read up on. What even is React? (I know what it is, I've used it, but what REALLY is React) And what even in the world is VueJS??? Time to dive a little bit deeper into concepts.
 - First and foremost: what is React? Well, React is a JavaScript library. The terms that standout to me about React and terms that I have now moved way past from. I'm choosing VueJS because (a) wow, what a name and story from its creator, and (b) I've never worked with it before so I want to try it out.
 - So I watched a couple YouTube videos from publishing a VueJS app to GitHub Pages for free, to creating my first VueJS app, to a complete crashcourse on VueJS and web development for beginners. I am diving into this one almost 4-hour long video by Faraday-something from freeCodeCamp.org on VueJS and I highly recommend it cause I love her voice and style of explaining things - I feel like I ACTUALLY understand things a little bit woohooo! This video is 3 years old though so it may be a bit deprecated and stuff, but overall I like it.
@@ -77,7 +81,7 @@ button
 }
 </style>
 ```
-
+- So... major dumbness that just happened. All my commits up until now were happening through my Personal Access Token author and not my own GitHub user. I found the fix though and I put it up there on top. I hope I remember this order. LOL.
 
 
 
@@ -88,4 +92,3 @@ button
 - I just got an email from HR... I need to commit this and take a moment to reflect on everything. This is huge.
 - Okay so why in the world is this so hard again? I am SO sleepy.
 - I have this insane idea to club together all incremental faces of the website and make a timelapse of it when launching the tool. That would be pretty cool I think.
-- So... major
