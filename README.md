@@ -17,8 +17,23 @@ git push origin <branch name> -> pushes all commits to the branch (in our case, 
 - I fixed the git not committing issue! Had to generate a Personal Access Token for this laptop. I think I should include the steps here, but maybe if I make that many projects, I won't need to remember (???) Who knows? Let's take things one step at a time.
 - Fixing the git not committing issue:
 (On laptop) Windows Credential Manager > Windows Credentials > git:https://github.com > Remove > (On github.com website) Profile > Settings > Developer Settings > Enter all details and give all permissions > Generate Token > Copy and save somewhere > (On laptop) Open the terminal on VS Code > git push origin main > (pop-up) Token > Enter token you just copied > OK
+- I was trying to choose between using React or VueJS for this project. Honestly, I don't understand what's going on. The benefits of the two? I will have to read up on. What even is React? (I know what it is, I've used it, but what REALLY is React) And what even in the world is VueJS??? Time to dive a little bit deeper into concepts.
+- First and foremost: what is React? Well, React is a JavaScript library. The terms that standout to me about React and terms that I have now moved way past from. I'm choosing VueJS because (a) wow, what a name and story from its creator, and (b) I've never worked with it before so I want to try it out.
+- So I watched a couple YouTube videos from publishing a VueJS app to GitHub Pages for free, to creating my first VueJS app, to a complete crashcourse on VueJS and web development for beginners. I am diving into this one almost 4-hour long video by Faraday-something from freeCodeCamp.org on VueJS and I highly recommend it cause I love her voice and style of explaining things - I feel like I ACTUALLY understand things a little bit woohooo! This video is 3 years old though so it may be a bit deprecated and stuff, but overall I like it.
+- First thing I need to understand is the difference between Vue 3 and the current Vue version and whether this is even the same now. Doing some research and coming back.
+- So... I think Vue right now IS Vue 3. So I think we're good... (fingers crossed).
+- Apparently there two core features to Vue which are Declarative Rendering and Reactivity.
+- How the documentation describes these in very hard language is this way:
+The above example demonstrates the two core features of Vue:
+Declarative Rendering: Vue extends standard HTML with a template syntax that allows us to declaratively describe HTML output based on JavaScript state.
+Reactivity: Vue automatically tracks JavaScript state changes and efficiently updates the DOM when changes happen.
+- In more human (sane) language, I would describe these this way:
+Declarative Rendering: You declare what the UI should look like based on data, instead of manually writing code to update the UI step-by-step. For example, you write <p>{{ message }}</p> and set message = 'Hello Vue!', and Vue will render <p>Hello Vue!</p> and ff later, message changes to 'Hi again!', Vue automatically updates the <p> tag to show <p>Hi again!<p>.
+Reactivity: Vue reacts to changes in your data. When your JavaScript data (called "state") changes, Vue knows which parts of the UI depend on that data and updates only those parts of the DOM i.e. you don’t need to write code like document.querySelector().innerText = ...; Vue does it for you.
+- Okay so past the two core features of Vue. Now, there is another section on "Ways of Using Vue" which is for experienced developers. They did give a bunch of usecases that honestly just sounded a little too intimidating for me at the moment so I am simply skipping over them at the moment, but here is the link if I'm ever feeling courageous in the future (already proud of you, Future Me if you're reading this): https://vuejs.org/guide/extras/ways-of-using-vue.html
+- I have been reading all over the place about how Vue is called "The Progressive Framework", and they only just explained why. Apparently it's because it's a framework that can grow with you and adapt to your needs; the core knowledge about how Vue works is shared across all - beginner, intermediate, expert, and everything in between - use cases.
 
 #### Other random thoughts I get while working on this:
 - I have realized when I first learn things, I need to watch the same videos multiple times sometimes before I understand them. What a roadblocker for progress, isn't it?
 - I just got an email from HR... I need to commit this and take a moment to reflect on everything. This is huge.
-
+- Okay so why in the world is this so hard again? I am SO sleepy.

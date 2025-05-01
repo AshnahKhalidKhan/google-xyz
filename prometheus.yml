@@ -1,0 +1,463 @@
+# my global config
+global:
+  scrape_interval: 100s
+# Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 100s
+# Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: "prometheus"
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+    scrape_interval: 5s
+    static_configs:
+      - targets: ["192.168.10.157:9090"]
+#  - job_name: "node_exporter"
+#    scrape_interval: 5s
+#    static_configs:
+#      - targets: ["192.168.10.155:9100"]
+#  - job_name: "ASTVMUS54"
+#    scrape_interval: 100s
+#    scrape_timeout: 90s
+#    static_configs:
+#      - targets: ["192.168.2.135:9182"]
+  - job_name: "ASTADM1609"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.10.26:9182"]
+  - job_name: "windows_exporter"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.10.191:9182"]
+  - job_name: "windows_exporter-tempwinser19"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.10.152:9182"]
+####### Important Virtual Machines #######
+  - job_name: "astdbc"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.10.120:9100"]
+  - job_name: "astdkr"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.85:9100"]
+  - job_name: "astmariadb02"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.136:9182"]
+  - job_name: "astmsqqa1201"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.165:9182"]
+#  - job_name: "astora801"
+#    scrape_interval: 100s
+#    scrape_timeout: 90s
+#    static_configs:
+#      - targets: ["192.168.2.99:9182"]
+#  - job_name: "astora803"
+#    scrape_interval: 100s
+#    scrape_timeout: 90s
+#    static_configs:
+#      - targets: ["192.168.2.88:9182"]
+  - job_name: "astoraqa1202"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.179:9182"]
+  - job_name: "astoracle12c"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.10.193:9182"]
+#  - job_name: "astpgsqa01"
+#    scrape_interval: 100s
+#    scrape_timeout: 90s
+#    static_configs:
+#      - targets: ["192.168.2.190:9100"]
+  - job_name: "astpgsqa03"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.174:9182"]
+  - job_name: "astpgvmus01"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.59:9182"]
+  - job_name: "astqaorcl201"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.60:9182"]
+  - job_name: "astsap101"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.10.221:9182"]
+  - job_name: "astsqany"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.78:9182"]
+#  - job_name: "astsqlqa01"
+#    scrape_interval: 100s
+#    scrape_timeout: 90s
+#    static_configs:
+#      - targets: ["192.168.2.58:9182"]
+#  - job_name: "astsqlqa02"
+#    scrape_interval: 100s
+#    scrape_timeout: 90s
+#    static_configs:
+#      - targets: ["192.168.2.108:9182"]
+#  - job_name: "astsqlqa04"
+#    scrape_interval: 100s
+#    scrape_timeout: 90s
+#    static_configs:
+#      - targets: ["192.168.2.95:9182"]
+  - job_name: "astvm1006"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.10.144:9182"]
+  - job_name: "astvmbuild"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.137:9182"]
+  - job_name: "usmsql2019"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.177:9182"]
+  - job_name: "usregdb02"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.96:9182"]
+  - job_name: "vmqa555"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.10.54:9182"]
+####### Blackbox Exporter Global Protect Links #######
+  - job_name: 'blackbox_exporter_Karachi_links'
+    static_configs:
+      - targets:
+        - '192.168.2.85:9115'
+  - job_name: 'Links-Karachi'
+    metrics_path: '/probe'
+    params:
+      module: [tcp_connect]
+    scrape_interval: 20s
+    scrape_timeout: 10s
+    static_configs:
+      - targets:
+        - '117.20.31.50:80'
+        - '119.63.129.2:9500'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: '192.168.2.85:9115'
+    tls_config:
+      insecure_skip_verify: true
+  - job_name: 'blackbox_exporter_US_link'
+    static_configs:
+      - targets:
+        - '192.168.10.157:9115'
+  - job_name: 'Link-US'
+    metrics_path: '/probe'
+    params:
+      module: [icmp]
+    scrape_interval: 20s
+    scrape_timeout: 10s
+    static_configs:
+      - targets:
+        - '207.178.211.67'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: '192.168.10.157:9115'
+    tls_config:
+      insecure_skip_verify: true
+####### Blackbox Exporter for Important Virtual Machines #######
+  - job_name: 'astora801'
+    metrics_path: '/probe'
+    params:
+      module: [icmp]
+    scrape_interval: 20s
+    scrape_timeout: 10s
+    static_configs:
+      - targets:
+        - '192.168.2.99'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: '192.168.10.157:9115'
+    tls_config:
+      insecure_skip_verify: true
+  - job_name: 'astora803'
+    metrics_path: '/probe'
+    params:
+      module: [icmp]
+    scrape_interval: 20s
+    scrape_timeout: 10s
+    static_configs:
+      - targets:
+        - '192.168.2.88'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: '192.168.10.157:9115'
+    tls_config:
+      insecure_skip_verify: true
+  - job_name: 'astpgsqa01'
+    metrics_path: '/probe'
+    params:
+      module: [icmp]
+    scrape_interval: 20s
+    scrape_timeout: 10s
+    static_configs:
+      - targets:
+        - '192.168.2.190'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: '192.168.10.157:9115'
+    tls_config:
+      insecure_skip_verify: true
+  - job_name: 'astsqlqa01'
+    metrics_path: '/probe'
+    params:
+      module: [icmp]
+    scrape_interval: 20s
+    scrape_timeout: 10s
+    static_configs:
+      - targets:
+        - '192.168.2.58'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: '192.168.10.157:9115'
+    tls_config:
+      insecure_skip_verify: true
+  - job_name: 'astsqlqa03'
+    metrics_path: '/probe'
+    params:
+      module: [icmp]
+    scrape_interval: 20s
+    scrape_timeout: 10s
+    static_configs:
+      - targets:
+        - '192.168.2.108'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: '192.168.10.157:9115'
+    tls_config:
+      insecure_skip_verify: true
+  - job_name: 'astsqlqa04'
+    metrics_path: '/probe'
+    params:
+      module: [icmp]
+    scrape_interval: 20s
+    scrape_timeout: 10s
+    static_configs:
+      - targets:
+        - '192.168.2.95'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: '192.168.10.157:9115'
+    tls_config:
+      insecure_skip_verify: true
+####### SNMP Exporter #######
+  - job_name: 'Palo_Alto_Firewall_Karachi'
+    scrape_interval: 10s
+    scrape_timeout: 10s
+    metrics_path: /snmp
+    static_configs:
+      - targets:
+          - 192.168.10.9  # Palo Alto Firewall Management IP which is listening on SNMP port
+    params:
+      module: [paloalto_fw]  # Palo Alto Firewall  module defined in snmp.yml
+      auth: [karachi_firewall_community_string]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 192.168.10.157:9116  # SNMP Exporter address
+  - job_name: 'Palo_Alto_Firewall_US'
+    scrape_interval: 10s
+    scrape_timeout: 10s
+    metrics_path: /snmp
+    static_configs:
+      - targets:
+          - 192.168.2.252  # Palo Alto Firewall Management IP which is listening on SNMP port
+    params:
+      module: [paloalto_fw]  # Palo Alto Firewall  module defined in snmp.yml
+      auth: [us_firewall_community_string]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 192.168.10.157:9116  # SNMP Exporter address
+####### Karachi servers #######
+  - job_name: "HYV_10"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.10.92:9182"]
+  - job_name: "HYV_11"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.10.137:9182"]
+  - job_name: "HYV_13 (Astera LAN)"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.10.14:9182"]
+  - job_name: "HYV_13 (Slot 2 Port 1)"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.10.53:9182"]
+  - job_name: "HYV_14"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.10.96:9182"]
+  - job_name: "HYV_15"
+    scrape_interval: 200s
+    scrape_timeout: 190s
+    static_configs:
+      - targets: ["192.168.10.134:9182"]
+  - job_name: "HYV_16"
+    scrape_interval: 200s
+    scrape_timeout: 190s
+    static_configs:
+      - targets: ["192.168.10.111:9182"]
+####### US servers #######
+  - job_name: "US_HYV_01"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.232:9182"]
+  - job_name: "US_HYV_02"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.223:9182"]
+  - job_name: "US_HYV_03"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.220:9182"]
+  - job_name: "US_HYV_04"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.231:9182"]
+  - job_name: "US_HYV_05"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.230:9182"]
+  - job_name: "US_HYV_06"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.224:9182"]
+  - job_name: "US_HYV_07"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.228:9182"]
+  - job_name: "US_HYV_08"
+    scrape_interval: 200s
+    scrape_timeout: 190s
+    static_configs:
+      - targets: ["192.168.2.222:9182"]
+  - job_name: "US_HYV_09"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.229:9182"]
+  - job_name: "US_HYV_10"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.226:9182"]
+  - job_name: "US_HYV_11"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.115:9182"]
+#  - job_name: "US_HYV_12"
+#    scrape_interval: 100s
+#    scrape_timeout: 90s
+#    static_configs:
+#      - targets: ["192.168.2.227:9182"]
+  - job_name: "US_HYV_13 (Astera LAN)"
+    scrape_interval: 100s
+    scrape_timeout: 90s
+    static_configs:
+      - targets: ["192.168.2.196:9182"]
+####### Uncomment when US_HYV_13 NIC 2 is fixed #######
+#  - job_name: "US_HYV_13 (Astera NIC 2)"
+#    scrape_interval: 500s
+#    scrape_timeout: 490s
+#    static_configs:
+#      - targets: ["192.168.2.43:9182"]
