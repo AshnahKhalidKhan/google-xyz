@@ -87,3 +87,5 @@ button
 - I have realized when I first learn things, I need to watch the same videos multiple times sometimes before I understand them. What a roadblocker for progress, isn't it?
 - I just got an email from HR... I need to commit this and take a moment to reflect on everything. This is huge.
 - Okay so why in the world is this so hard again? I am SO sleepy.
+- I have this insane idea to club together all incremental faces of the website and make a timelapse of it when launching the tool. That would be pretty cool I think.
+- So... major
