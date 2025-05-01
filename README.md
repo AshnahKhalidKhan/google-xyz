@@ -3,6 +3,7 @@ Designed to improve resume-making and tailoring by helping you restructure your 
 
 Accessible via: https://ashnahkhalidkhan.github.io/google-xyz/
 
+
 #### Resources used:
 - https://pages.github.com/ (Project site > Start from scratch > Follow all instructions there).
 - I need to make sure I use ReactJS or VueJS or some other fancy JS because I need to update the values being outputted multiple times.
@@ -31,7 +32,56 @@ Reactivity: Vue automatically tracks JavaScript state changes and efficiently up
 Declarative Rendering: You declare what the UI should look like based on data, instead of manually writing code to update the UI step-by-step. For example, you write `<p>{{ message }}</p>` and set message = 'Hello Vue!', and Vue will render `<p>Hello Vue!</p>` and if later, message changes to 'Hi again!', Vue automatically updates the `<p>` tag to show `<p>Hi again!<p>`.
 Reactivity: Vue reacts to changes in your data. When your JavaScript data (called "state") changes, Vue knows which parts of the UI depend on that data and updates only those parts of the DOM i.e. you don’t need to write code like document.querySelector().innerText = ...; Vue does it for you.
 - Okay so past the two core features of Vue. Now, there is another section on "Ways of Using Vue" which is for experienced developers. They did give a bunch of usecases that honestly just sounded a little too intimidating for me at the moment so I am simply skipping over them at the moment, but here is the link if I'm ever feeling courageous in the future (already proud of you, Future Me if you're reading this): https://vuejs.org/guide/extras/ways-of-using-vue.html
-- I have been reading all over the place about how Vue is called "The Progressive Framework", and they only just explained why. Apparently it's because it's a framework that can grow with you and adapt to your needs; the core knowledge about how Vue works is shared across all - beginner, intermediate, expert, and everything in between - use cases.
+- I have been reading all over the place about how Vue is called "The Progressive Framework", and they only just explained why. Apparently it's because "it's a framework that can grow with you and adapt to your needs"; the core knowledge about how Vue works is shared across all - beginner, intermediate, expert, and everything in between - use cases.
+- At the heart of writing code for VueJS, is following a file format called Single-File Component or SFC or *.vue files.
+- Vue SFC files contain 3 sections: the component's logic (JavaScript), template (HTML), and styles (CSS) in a single file. These are denoted by the `<script>`, `<template>` and `<style>` tags respectively. To put it into more human (sane) form:
+component's logic -> Javascript -> `<script>`
+component's template -> HTML -> `<template>`
+component's styles -> CSS -> `<style>`
+- Now to illustrate the SFC thing via an example. Both of the following two codes are valid in VueJS, but only the second one follows SFC format:
+Code # 1 (Not SFC):
+```
+import { createApp, ref } from 'vue'
+
+createApp({
+    setup() {
+        return {
+            count: ref(0)
+        }
+    }
+}).mount('#app')
+
+<div id="app">
+    <button @click="count++">
+        Count is: {{ count }}
+    </button>
+</div>
+```
+Code # 2 (SFC):
+```
+<script setup>
+import { ref } from 'vue'
+const count = ref(0)
+</script>
+
+<template>
+    <button @click="count++">
+        Count is: {{ count }}
+    </button>
+</template>
+
+<style scoped>
+button
+{
+    font-weight: bold;
+}
+</style>
+```
+
+
+
+
+
 
 #### Other random thoughts I get while working on this:
 - I have realized when I first learn things, I need to watch the same videos multiple times sometimes before I understand them. What a roadblocker for progress, isn't it?
