@@ -327,7 +327,25 @@ const text = ref('');
 </template>
 ```
 
+- There are another set of Vue JS directives for handling conditional rendering of elements and those include `v-if`, `v-else-if` and `v-else`. Honestly, it's best to just see how they work and how they conditionally render elements using this example but I'm only using two of these:
+```
+<script setup>
+import { ref } from 'vue';
 
+const booleanVariable = ref(true);
+
+function changingTheBooleanVariable()
+{
+    booleanVariable.value = !booleanVariable.value;
+}
+</script>
+
+<template>
+    <button v-on:click="changingTheBooleanVariable">Toggle</button>
+    <h1 v-if="booleanVariable">Vue is awesome!</h1>
+    <h1 v-else>Oh no 😢</h1>
+</template>
+```
 
 
 - VueJS directives:
