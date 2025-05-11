@@ -220,9 +220,41 @@ message2.value = message2.value + " 2";
 </template>
 ```
 
+- Normal HTML elements have attributes like `style`, `id`, `class` etc that you can add to the HTML element for defining properties. Vue JS directives are special attributes in Vue that start with the `v-` prefix.
 
+- `v-bind` is a Vue JS directive used for binding an attribute to a dynamic value. It takes an argument which is the attribute we want to bind and a variable with the dynamic value we want to bind it to. For example, in the following code `v-bind` binds the `id` attribute of the `div` element to the value of the variable `dynamicId` which is `'whateverTheNameOfAnIDIWantToKeep'`:
+```
+<script setup>
+import { ref } from 'vue';
 
+const dynamicId = ref('whateverTheNameOfAnIDIWantToKeep');
+</script>
 
+<template>
+    <div v-bind:id="dynamicId">This is a dynamic ID<div>
+</template>
+``` 
+As a second example given in the Vue Docs, in the following code `v-bind` binds the `class` attribute of the `h1` element to the value of the variable `titleClass` which is `'title'` so the `h1` element bears the style properties of the `title` class i.e. the color red:
+```
+<script setup>
+import { ref } from 'vue';
+
+const titleClass = ref('title')
+</script>
+
+<template>
+    <h1 v-bind:class="titleClass">Make me red</h1>
+</template>
+
+<style>
+.title
+{
+  color: red;
+}
+</style>
+```
+
+- The shorthand for writing `v-bind:id="..."` or any other `v-bind` is just to directly use whatever is after `v-bind` like so `:id="..."` etc. But we all know I'm not going to do this because I like explicit code. Hehe.
 
 - VueJS directives:
 v-cloak -->
