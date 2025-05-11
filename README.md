@@ -295,6 +295,40 @@ function incrementFunctionNameBaby()
 
 - Fun fact: I just learned what 'syntactic sugar' means. According to Wikipedia, "In computer science, syntactic sugar is syntax within a programming language that is designed to make things easier to read or to express. It makes the language "sweeter" for human use." That's pretty cute. Sweet little programming nerds who came up with this.
 
+- Another directive, is `v-model`. This directive is special to `input` elements, usually used in forms. For any input we used in a form, we would like it to automatically update its variable value as it is updated on input. Using the directives we have already learned, we can accomplish that through something like this called a "two-way binding":
+```
+<script setup>
+import { ref } from 'vue';
+
+const text = ref('');
+
+function updateInput(e)
+{
+    text.value = e.target.value
+}
+</script>
+
+<template>
+    <input v-bind:value="text" v-on:input="updateInput">
+    <p>{{ text }}</p>
+</template>
+```
+A more efficient way to do this for `input` type elements is to use the `v-model` directive. With `v-model`, we can completely get rid of the update function and simply assign it the variable for our input like so:
+```
+<script setup>
+import { ref } from 'vue';
+
+const text = ref('');
+</script>
+
+<template>
+    <input v-model="text">
+    <p>{{ text }}</p>
+</template>
+```
+
+
+
 
 - VueJS directives:
 v-cloak -->
