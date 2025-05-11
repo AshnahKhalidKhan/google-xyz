@@ -256,6 +256,44 @@ const titleClass = ref('title')
 
 - The shorthand for writing `v-bind:id="..."` or any other `v-bind` is just to directly use whatever is after `v-bind` like so `:id="..."` etc. But we all know I'm not going to do this because I like explicit code. Hehe.
 
+- Quickly going to learn how to create a function in Vue. We declare this in the `<script>` tag and the keyword we use is `function`, followed by the name of the fuction and any arguments we want to provide in it. We don't really need to return any value if not needed. This is what it looks like:
+```
+<script setup>
+import { ref } from 'vue'
+
+const count = ref(0)
+
+function incrementFunctionNameBaby()
+{
+    count.value++
+}
+</script>
+```
+
+- Now, we move onto another concept of Vue which is event listening. For this, we use another Vue directive called `v-on`. This directive takes an argument which is a DOM event and the function we want to be triggered every time this event is triggered on the element the directive is attached to. All the in-built DOM events that can be given as an argument to `v-on` are present on this link (https://www.w3schools.com/jsref/dom_obj_event.asp). To give an example, the code `<button v-on:click="incrementFunctionNameBaby">This button triggers the count to be increased</button>` attaches the `v-on` directive to the `button` element which, on every `click` event triggers the `incrementFunctionNameBaby` function:
+```
+<script setup>
+import { ref } from 'vue'
+
+const count = ref(0)
+
+function incrementFunctionNameBaby()
+{
+    count.value++
+}
+</script>
+
+<template>
+    <button v-on:click="incrementFunctionNameBaby">This button triggers the count to be increased</button>
+    <h1>{{ count }}</h1>
+</template>
+```
+
+- The shorthand for writing `v-on:click="..."` or any other `v-on` is just to directly use replace `v-on:` with `@` like so `@click="..."` or `@scroll=""` etc. But we all know I'm not going to do this too because, again, I like explicit code. Hehe hehe. Michael Jackson laugh.
+
+- 
+
+
 - VueJS directives:
 v-cloak -->
 v-model --> two-way data binding?
