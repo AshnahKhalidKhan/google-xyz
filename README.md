@@ -291,7 +291,9 @@ function incrementFunctionNameBaby()
 
 - The shorthand for writing `v-on:click="..."` or any other `v-on` is just to directly use replace `v-on:` with `@` like so `@click="..."` or `@scroll=""` etc. But we all know I'm not going to do this too because, again, I like explicit code. Hehe hehe. Michael Jackson laugh.
 
-- 
+- Also, important point here is that you can also create and listen to custom events in Vue, but we all know I am not even going to step close to that before I have the scaffold of the website up (I am so, so, SO tempted to but no, must practice self-control) so we are keeping a rain-check on that unless we need it.
+
+- Fun fact: I just learned what 'syntactic sugar' means. According to Wikipedia, "In computer science, syntactic sugar is syntax within a programming language that is designed to make things easier to read or to express. It makes the language "sweeter" for human use." That's pretty cute. Sweet little programming nerds who came up with this.
 
 
 - VueJS directives:
