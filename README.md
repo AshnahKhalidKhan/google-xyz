@@ -347,6 +347,176 @@ function changingTheBooleanVariable()
 </template>
 ```
 
+- Time for the `v-for` directive. I won't lie, everyone has worded it so weirdly that I've had to read different types of documentation and watch videos thrice for this. It's actually really simple once you replace the HORRIBLY worded variable names with explicitly named ones - for us gold, old-fashioned (sane) folks. Here it goes.
+
+- `v-for` is absolutely horrible and I do not understand it. I cannot have. I have leftover eyeliner in my eye and it hurts to even keep my eyes open. Ugh.
+
+- I was today years old when I got to know that "props" stands for "properties". This explains SO much.
+
+- I was also today years old when it finally clicked that "init" in a million different places stands for "initialized". Like what even bro, use full forms like a sane person. I hate abbreviators. Barbarians...
+
+- Here's the example:
+
+- Never mind that, we're taking a detour. Time to experiment with a little HTML canvas.
+
+- Starting with HTML canvas starts by using the HTML tag ``<canvas></canvas>`` in your code:
+```
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Google XYZ</title>
+</head>
+<body>
+    <canvas>
+        Shubidababubba
+    </canvas>
+</body>
+</html>
+```
+
+- So immediately, this won't be visible so I'm going to add a style to this in the form of a border and a fill color:
+```
+<!DOCTYPE html>
+<html>
+<style>
+    canvas
+    {
+        border: 1px solid;
+        background: peachpuff;
+    }
+</style>
+<head>
+    <meta charset="UTF-8" />
+    <title>Google XYZ</title>
+</head>
+<body>
+    <canvas>
+        Shubidababubba
+    </canvas>
+</body>
+</html>
+```
+
+- Right now, the `<canvas>` and `<body>` elements in the HTML file are set to default values of size so the `<canvas>` does not stretch to the entire webpage and there is some white space from where the `<canvas>` starts on the webpage. We're going to solve this incrementally. First, we're going to remove the default margins for the `<body>` and set them to zero. The `<canvas>` element should now no longer have any whitespaces surrounding it:
+```
+<!DOCTYPE html>
+<html>
+<style>
+    body
+    {
+        margin: 0;
+    }
+
+    canvas
+    {
+        border: 1px solid;
+        background: peachpuff;
+    }
+</style>
+<head>
+    <meta charset="UTF-8" />
+    <title>Google XYZ</title>
+</head>
+<body>
+    <canvas>
+        Shubidababubba
+    </canvas>
+</body>
+</html>
+```
+
+- Now we want the `<canvas>` element to stretch to the entire webpage. You might be tempted to do this by setting the width and height of the `<canvas>` to 100%, but this won't work as will be visible once you click on "Inspect" for the webpage and see some secret whitespace creeping up so DO NOT DO IT THIS WAY:
+```
+<!DOCTYPE html>
+<html>
+<style>
+    body
+    {
+        margin: 0;
+    }
+
+    canvas
+    {
+        border: 1px solid;
+        background: peachpuff;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<head>
+    <meta charset="UTF-8" />
+    <title>Google XYZ</title>
+</head>
+<body>
+    <canvas>
+        Shubidababubba
+    </canvas>
+</body>
+</html>
+```
+
+- What I will need to do instead, is use JavaScript to get the whole webpage's dynamic size. For this, I will first create a `.js` file with any name; I am choosing the name `windowSize.js` just to experiment a little. And I will now link this file to my HTML file by tweaking the `index.html` like so with the `<script>` tag and adding the source (`src`) argument with the filename:
+```
+<!DOCTYPE html>
+<html>
+<style>
+    body
+    {
+        margin: 0;
+    }
+
+    canvas
+    {
+        border: 1px solid;
+        background: peachpuff;
+    }
+</style>
+<head>
+    <meta charset="UTF-8" />
+    <title>Google XYZ</title>
+</head>
+<body>
+    <canvas>
+        Shubidababubba
+    </canvas>
+    <script src="./windowSize.js">
+    </script>
+</body>
+</html>
+```
+
+- In the `windowSize.js` file, I will now need a way to reference this `<canvas>` element in my `index.html` file. To do this, we can use `document.querySelector('canvas')` like so where we create a variable called `canvasVariable` (again, being explicit with the names for now) and we use `document.querySelector('canvas')` to select all `<canvas>` elements in our webpage:
+```
+var canvasVariable = document.querySelector('canvas');
+```
+
+- To set the size (width and height) of the `<canvas>` to the window's size, we can use the browser's in-built `window` object which has the properties `innerWidth` and `innerHeight` properties like so which will make sure the `<canvas>` is the full size of the window:
+```
+var canvasVariable = document.querySelector('canvas');
+canvasVariable.width = window.innerWidth;
+canvasVariable.height = window.innerHeight;
+```
+
+- There are also other properties for the `window` object and here are the differences between its `innerWidth`, `outerWidth`, `innerHeight` and `outerHeight` properties:
+innerWidth and innerHeight --> do NOT include scrollbars and do NOT include browser UI (e.g., toolbars)
+outerWidth and outerHeight --> include scrollbars and include browser UI (e.g., toolbars)
+
+- One problem here is that our above code fixes the size of our `<canvas>` so for example when we go to resize our window (start with a smaller window, refresh the webpage, then maximize the window and you'll see what I mean), it won't dynamically resize the `<canvas>` with it. To fix this, we need to update our `canvasVariable.width` and `canvasVariable.height` variables with the current values for `window.innerWidth` and `window.innerHeight` respectively every time the window resizes. For this, we use our `window` object and add an `EventListener` listening for `'resize'` events for our window and call a function which updates these properties like so in it:
+```
+var canvasVariable = document.querySelector('canvas');
+
+canvasVariable.width = window.innerWidth;
+canvasVariable.height = window.innerHeight;
+
+window.addEventListener('resize', function()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+});
+```
+
+
 
 - VueJS directives:
 v-cloak -->
@@ -367,3 +537,6 @@ v-on:click -->
 - Okay so why in the world is this so hard again? I am SO sleepy.
 - I have this insane idea to club together all incremental faces of the website and make a timelapse of it when launching the tool. That would be pretty cool I think.
 - Why in the world do people reach out to me asking me about my "life progress"? Like dude, what are you looking to achieve by asking people what THEY are doing? I don't understand influence.
+- I am pretty sure if I can just develop the discipline to sit and go through code documentation completely, I will be invincible.
+- So. Tried. Of. Arrogant. People. Actually, just arrogant programmers.
+- Sub pagal hain. Sub kay sub pagal hain.
