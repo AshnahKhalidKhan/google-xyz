@@ -516,6 +516,24 @@ window.addEventListener('resize', function()
 });
 ```
 
+- Before we start, time for a little refractoring of code - OH MY GOD I FEEL LIKE SUCH A PRO CODER WITH THIS MOVE AAAAHHHHH:
+```
+var canvasVariable = document.querySelector('canvas');
+
+resizeCanvas();
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+});
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+```
+
 
 
 - VueJS directives:
