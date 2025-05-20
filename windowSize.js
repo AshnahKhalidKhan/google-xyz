@@ -1,6 +1,8 @@
-var canvasVariable = document.querySelector('canvas');
+let canvasVariable = document.querySelector('canvas');
 
 resizeCanvas();
+
+let canvas2DContextVariable = canvasVariable.getContext('2d');
 
 window.addEventListener('resize', function()
 {

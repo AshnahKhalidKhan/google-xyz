@@ -11,24 +11,24 @@ Accessible via: https://ashnahkhalidkhan.github.io/google-xyz/
 
 - Another thing needed is to incorporate GitHub Actions because... why not? It's good practice for learning GitHub Actions and its workings.
 
-- Okie dokie, learning the order of Git commands I need each to update this repository via this video by Net Ninja on YouTube: https://www.youtube.com/watch?v=QyFcl_Fba-k
+- Okie dokie, learning the order of Git commands I need each to update this repository via this video by Net Ninja on YouTube: `https://www.youtube.com/watch?v=QyFcl_Fba-k`
 
 - So some GitHub commands and what they do I learned on the way:
-git status --> tells me the branch I am currently in
-git add . --> add all changes (that is what the dot in the end is for) to the Git staging area; it allows you to select which changes you want to include in your next commit. Without using git add, no changes would be recorded in the commit.
-git commit -m "descriptive commit message" --> basically the actual command that commits all changes to the repository
-git push origin <branch name> --> pushes all commits to the branch (in our case, branch name will be 'main'); basically updates the branch with all commits
+`git status` --> tells me the branch I am currently in
+`git add .` --> add all changes (that is what the dot in the end is for) to the Git staging area; it allows you to select which changes you want to include in your next commit. Without using git add, no changes would be recorded in the commit.
+`git commit -m "descriptive commit message"` --> basically the actual command that commits all changes to the repository
+`git push origin <branch name>` --> pushes all commits to the branch (in our case, branch name will be 'main'); basically updates the branch with all commits
 
 - So, I am back. Need to fix this git not committing issue. Let's see what I can do.
 
 - I fixed the git not committing issue! Had to generate a Personal Access Token for this laptop. I think I should include the steps here, but maybe if I make that many projects, I won't need to remember (???) Who knows? Let's take things one step at a time.
 
 - Fixing the git not committing issue:
-(On laptop) Windows Credential Manager > Windows Credentials > git:https://github.com > Remove > (On github.com website) Profile > Settings > Developer Settings > Enter all details and give all permissions > Generate Token > Copy and save somewhere > (On laptop) Open the terminal on VS Code > git push origin main > (pop-up) Token > Enter token you just copied > OK
+(On laptop) Windows Credential Manager > Windows Credentials > `git:https://github.com` > Remove > (On github.com website) Profile > Settings > Developer Settings > Enter all details and give all permissions > Generate Token > Copy and save somewhere > (On laptop) Open the terminal on VS Code > git push origin main > (pop-up) Token > Enter token you just copied > OK
 
 - Yeah so I'm coming back to this line after the previous line after I discovered I was committing with the wrong author identity. To fix this, just to your terminal and enter these two commands with your primary GitHub email and name:
-git config --global user.name "Your Name"
-git config --global user.email "your-email@example.com"
+`git config --global user.name "Your Name"`
+`git config --global user.email "your-email@example.com"`
 After that, you can go about committing this normally as you would.
 
 - I was trying to choose between using React or VueJS for this project. Honestly, I don't understand what's going on. The benefits of the two? I will have to read up on. What even is React? (I know what it is, I've used it, but what REALLY is React) And what even in the world is VueJS??? Time to dive a little bit deeper into concepts.
@@ -52,7 +52,7 @@ Reactivity: Vue automatically tracks JavaScript state changes and efficiently up
 Declarative Rendering: You declare what the UI should look like based on data, instead of manually writing code to update the UI step-by-step. For example, you write `<p>{{ message }}</p>` and set message = 'Hello Vue!', and Vue will render `<p>Hello Vue!</p>` and if later, message changes to 'Hi again!', Vue automatically updates the `<p>` tag to show `<p>Hi again!<p>`.
 Reactivity: Vue reacts to changes in your data. When your JavaScript data (called "state") changes, Vue knows which parts of the UI depend on that data and updates only those parts of the DOM i.e. you don’t need to write code like document.querySelector().innerText = ...; Vue does it for you.
 
-- Okay so past the two core features of Vue. Now, there is another section on "Ways of Using Vue" which is for experienced developers. They did give a bunch of usecases that honestly just sounded a little too intimidating for me at the moment so I am simply skipping over them at the moment, but here is the link if I'm ever feeling courageous in the future (already proud of you, Future Me if you're reading this): https://vuejs.org/guide/extras/ways-of-using-vue.html
+- Okay so past the two core features of Vue. Now, there is another section on "Ways of Using Vue" which is for experienced developers. They did give a bunch of usecases that honestly just sounded a little too intimidating for me at the moment so I am simply skipping over them at the moment, but here is the link if I'm ever feeling courageous in the future (already proud of you, Future Me if you're reading this): `https://vuejs.org/guide/extras/ways-of-using-vue.html`
 
 - I have been reading all over the place about how Vue is called "The Progressive Framework", and they only just explained why. Apparently it's because "it's a framework that can grow with you and adapt to your needs"; the core knowledge about how Vue works is shared across all - beginner, intermediate, expert, and everything in between - use cases.
 
@@ -488,12 +488,12 @@ function changingTheBooleanVariable()
 
 - In the `windowSize.js` file, I will now need a way to reference this `<canvas>` element in my `index.html` file. To do this, we can use `document.querySelector('canvas')` like so where we create a variable called `canvasVariable` (again, being explicit with the names for now) and we use `document.querySelector('canvas')` to select all `<canvas>` elements in our webpage:
 ```
-var canvasVariable = document.querySelector('canvas');
+let canvasVariable = document.querySelector('canvas');
 ```
 
 - To set the size (width and height) of the `<canvas>` to the window's size, we can use the browser's in-built `window` object which has the properties `innerWidth` and `innerHeight` properties like so which will make sure the `<canvas>` is the full size of the window:
 ```
-var canvasVariable = document.querySelector('canvas');
+let canvasVariable = document.querySelector('canvas');
 canvasVariable.width = window.innerWidth;
 canvasVariable.height = window.innerHeight;
 ```
@@ -504,7 +504,7 @@ outerWidth and outerHeight --> include scrollbars and include browser UI (e.g., 
 
 - One problem here is that our above code fixes the size of our `<canvas>` so for example when we go to resize our window (start with a smaller window, refresh the webpage, then maximize the window and you'll see what I mean), it won't dynamically resize the `<canvas>` with it. To fix this, we need to update our `canvasVariable.width` and `canvasVariable.height` variables with the current values for `window.innerWidth` and `window.innerHeight` respectively every time the window resizes. For this, we use our `window` object and add an `EventListener` listening for `'resize'` events for our window and call a function which updates these properties like so in it:
 ```
-var canvasVariable = document.querySelector('canvas');
+let canvasVariable = document.querySelector('canvas');
 
 canvasVariable.width = window.innerWidth;
 canvasVariable.height = window.innerHeight;
@@ -518,7 +518,7 @@ window.addEventListener('resize', function()
 
 - Before we start, time for a little refractoring of code - OH MY GOD I FEEL LIKE SUCH A PRO CODER WITH THIS MOVE AAAAHHHHH:
 ```
-var canvasVariable = document.querySelector('canvas');
+let canvasVariable = document.querySelector('canvas');
 
 resizeCanvas();
 
@@ -534,22 +534,30 @@ function resizeCanvas()
 }
 ```
 
+- To actually draw shapes and animations on the `<canvas>`, we need to use a method called `getContext()` and use the argument `'2d'` in it. The `getContext('2d')` method retrieves the 2D rendering context (a `CanvasRenderingContext2D` object), which provides methods and properties to draw shapes, text, images, and more. We will use it in our  `windowSize.js` file like so by initiazing a variable `canvas2DContextVariable` and setting it to the `canvasVariable` calling the `getContext('2d')` method on it:
+```
+let canvasVariable = document.querySelector('canvas');
+
+resizeCanvas();
+
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+});
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+```
 
 
-- VueJS directives:
-v-cloak -->
-v-model --> two-way data binding?
-v-if -->
-v-elseif -->
-v-else -->
-- Vue events:
-v-on:click -->
 
 
-
-
-
-#### Other random thoughts I get while working on this:
+#### Other random thoughts I get while working on this because why not:
 - I have realized when I first learn things, I need to watch the same videos multiple times sometimes before I understand them. What a roadblocker for progress, isn't it?
 - I just got an email from HR... I need to commit this and take a moment to reflect on everything. This is huge.
 - Okay so why in the world is this so hard again? I am SO sleepy.
@@ -558,3 +566,4 @@ v-on:click -->
 - I am pretty sure if I can just develop the discipline to sit and go through code documentation completely, I will be invincible.
 - So. Tried. Of. Arrogant. People. Actually, just arrogant programmers.
 - Sub pagal hain. Sub kay sub pagal hain.
+- I think I lack the basic human decency to do anything. Yup. I am indecent human being altogether.
