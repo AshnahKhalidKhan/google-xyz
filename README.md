@@ -554,8 +554,137 @@ function resizeCanvas()
 }
 ```
 
+- We're going to draw some circles! For this, we will use the `.arc()` method for the `canvas2DContextVariable` object like so: `canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle, counterclockwise);` In this method, the arguments correspond to the following:
+x --> The x-coordinate of the center of the arc.
+y --> The y-coordinate of the center of the arc.
+radius --> The radius of the arc (a positive number).
+startAngle --> The starting angle of the arc in radians (0 is at the 3 o'clock position on the circle).
+endAngle --> The ending angle of the arc in radians.
+counterclockwise (optional) --> A boolean value. If true, the arc is drawn counterclockwise; otherwise, it is drawn clockwise (default is false).
 
+- Note that the values for startAngle and endAngle will range from `0` to `Math.PI * 2`.
 
+- Here is how we will a bunch of random circle at random positions throughout the whole window in our code using a 'for' loop: firstly, we will create the for-loop - I want 200 circles to be created so I am running it 200 times:
+```
+let canvasVariable = document.querySelector('canvas');
+
+resizeCanvas();
+
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+
+for (let i = 0; i < 200; i++)
+{
+
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+});
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+```
+
+- Then, we will create and initialize variables for each of the arguments for making the circles using the `.arc()` method:
+```
+let canvasVariable = document.querySelector('canvas');
+
+resizeCanvas();
+
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+
+let x, y, radius;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
+
+for (let i = 0; i < 200; i++)
+{
+    canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+});
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+```
+
+- An important thing to note here is that since it is a circle we want to draw, the `startAngle` and `endAngle` values will be the same each time so they have been made into constants. Now we will figure out a formula for calculating the values for `x`, `y`, and `radius`. For this, we will need to understand the ranges we want to keep for all three values. `x` should be any value within the range of the width of the window, `y` should be any value within the range of the height of the window and we have decided that we want the radius to lie anywhere between the values of 10 and 50. Using the function `Math.random()` and `Math.floor()` we can calculate random values for `x`, `y` and `radius` that lie within this range like so:
+```
+let canvasVariable = document.querySelector('canvas');
+
+resizeCanvas();
+
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+
+let x, y, radius;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
+
+for (let i = 0; i < 200; i++)
+{
+    x = Math.floor(Math.random() * window.innerWidth);
+    y = Math.floor(Math.random() * window.innerHeight);
+    radius = Math.floor(Math.random() * 50) + 10;
+    canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+});
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+```
+
+- Now to actually draw the circles, we will use two methods with our `canvas2DContextVariable` object: `.beginPath()` and `.stroke()`. The `.beginPath()` method reinitialize the starting point of where we will create the next circle or else all the circles would be drawn on top of eachother, while the `.stroke()` method actually draws the lines making the circle:
+```
+let canvasVariable = document.querySelector('canvas');
+
+resizeCanvas();
+
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+
+let x, y, radius;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
+
+for (let i = 0; i < 200; i++)
+{
+    canvas2DContextVariable.beginPath();
+    x = Math.floor(Math.random() * window.innerWidth);
+    y = Math.floor(Math.random() * window.innerHeight);
+    radius = Math.floor(Math.random() * 50) + 10;
+    canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+    canvas2DContextVariable.stroke();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+});
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+```
+
+- Ah, magnifique! All circles are drawn.
 
 #### Other random thoughts I get while working on this because why not:
 - I have realized when I first learn things, I need to watch the same videos multiple times sometimes before I understand them. What a roadblocker for progress, isn't it?
