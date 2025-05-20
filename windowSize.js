@@ -18,8 +18,8 @@ for (let i = 0; i < 200; i++)
     radius = Math.floor(Math.random() * 50) + 10;
     canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
     color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
-    canvas2DContextVariable.strokeStyle = color;
-    canvas2DContextVariable.stroke();
+    canvas2DContextVariable.fillStyle = color;
+    canvas2DContextVariable.fill();
 }
 
 window.addEventListener('resize', function()
