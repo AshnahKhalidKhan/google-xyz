@@ -684,7 +684,93 @@ function resizeCanvas()
 }
 ```
 
-- Ah, magnifique! All circles are drawn.
+- Ah, magnifique! All circles are drawn. Now let's get to some styling to make them look like bubbles. First, let's REMOVE this section of code from the `<style>` tag in the `index.html` file:
+```
+canvas
+{
+    border: 1px solid;
+    background: peachpuff;
+}
+```
+
+- Now let's add some code to make the circles look like bubbles. First we will choose a color theme palette and initialize an array called `colorPalette` with all these values, and also initialize a variable `color` which randomly selects a color from the array each time:
+```
+let canvasVariable = document.querySelector('canvas');
+
+resizeCanvas();
+
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+
+let colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2']
+
+let x, y, radius;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
+
+for (let i = 0; i < 200; i++)
+{
+    canvas2DContextVariable.beginPath();
+    x = Math.floor(Math.random() * window.innerWidth);
+    y = Math.floor(Math.random() * window.innerHeight);
+    radius = Math.floor(Math.random() * 50) + 10;
+    canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+    color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+    canvas2DContextVariable.stroke();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+});
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+```
+
+- Let's start small. For now, we're going to only make the outline of the circles colored. To do this, we need to set a property called `strokeStyle` for our `canvas2DContextVariable` object to the `color` value we are randomly choosing:
+```
+let canvasVariable = document.querySelector('canvas');
+
+resizeCanvas();
+
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+
+let colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2']
+
+let x, y, radius;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
+
+for (let i = 0; i < 200; i++)
+{
+    canvas2DContextVariable.beginPath();
+    x = Math.floor(Math.random() * window.innerWidth);
+    y = Math.floor(Math.random() * window.innerHeight);
+    radius = Math.floor(Math.random() * 50) + 10;
+    canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+    color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+    canvas2DContextVariable.strokeStyle = color;
+    canvas2DContextVariable.stroke();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+});
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+```
+A bunch of colored-outline circles should be visible on the screen now.
+
+
+
 
 #### Other random thoughts I get while working on this because why not:
 - I have realized when I first learn things, I need to watch the same videos multiple times sometimes before I understand them. What a roadblocker for progress, isn't it?
