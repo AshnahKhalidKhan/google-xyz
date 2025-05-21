@@ -20,7 +20,7 @@ for (let i = 0; i < 200; i++)
     color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
     gradient = canvas2DContextVariable.createRadialGradient(x - (radius/2), y - (radius/2), 0, x, y, radius);
     gradient.addColorStop(0.2, '#FFFFFF');
-    gradient.addColorStop(1.0, color);
+    gradient.addColorStop(1.0, color + "CC");
     canvas2DContextVariable.fillStyle = gradient;
     canvas2DContextVariable.fill();
 }

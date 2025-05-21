@@ -918,7 +918,7 @@ for (let i = 0; i < 200; i++)
     color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
     gradient = canvas2DContextVariable.createRadialGradient(x - (radius/2), y - (radius/2), 0, x, y, radius);
     gradient.addColorStop(0.2, '#FFFFFF');
-    gradient.addColorStop(1.0, color);
+    gradient.addColorStop(1.0, color + "CC");
     canvas2DContextVariable.fillStyle = gradient;
     canvas2DContextVariable.fill();
 }
@@ -935,6 +935,98 @@ function resizeCanvas()
 }
 ```
 
+- The last thing for us to do is to add some transparency to these bubbles to give them that soft and light feeling. To do so, we just need to manipulate the chosen color's hexadecimal value. The last two numbers of a hexadecimal 8-digit color code correspond to its opacity (or transparency-related) value. Whatever transparency we want, we convert that to the hexadecimal form and append that to the color's original 6-digit hexadecimal value. In our case, we want 20% transparency or 80% opacity which translates to the hexadecimal code `CC` (we can use this site for help: `https://davidwalsh.name/hex-opacity`). To achieve this, we simply append this to our color value in our `.addStopColor()` method:
+```
+let canvasVariable = document.querySelector('canvas');
+
+resizeCanvas();
+
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+
+let colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2']
+
+let x, y, radius, color, gradient;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
+
+for (let i = 0; i < 200; i++)
+{
+    canvas2DContextVariable.beginPath();
+    x = Math.floor(Math.random() * window.innerWidth);
+    y = Math.floor(Math.random() * window.innerHeight);
+    radius = Math.floor(Math.random() * 50) + 10;
+    canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+    color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+    gradient = canvas2DContextVariable.createRadialGradient(x - (radius/2), y - (radius/2), 0, x, y, radius);
+    gradient.addColorStop(0.2, '#FFFFFF');
+    gradient.addColorStop(1.0, color + "CC");
+    canvas2DContextVariable.fillStyle = gradient;
+    canvas2DContextVariable.fill();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+});
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+```
+
+- And we are done! The bubbles are colored! You know, I'm seriously thinking of ditching the two-tone-ness and just going with solid colored transparent circles because they seem so minimalistic and cute, but I don't know... this is what they'd look like:
+```
+let canvasVariable = document.querySelector('canvas');
+
+resizeCanvas();
+
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+
+let colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2']
+
+let x, y, radius, color, gradient;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
+
+for (let i = 0; i < 200; i++)
+{
+    canvas2DContextVariable.beginPath();
+    x = Math.floor(Math.random() * window.innerWidth);
+    y = Math.floor(Math.random() * window.innerHeight);
+    radius = Math.floor(Math.random() * 50) + 10;
+    canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+    color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+    gradient = canvas2DContextVariable.createRadialGradient(x - (radius/2), y - (radius/2), 0, x, y, radius);
+    gradient.addColorStop(1.0, color + "CC");
+    canvas2DContextVariable.fillStyle = gradient;
+    canvas2DContextVariable.fill();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+});
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+```
+THEY'RE SO PRETTY!!!
+
+
+
+- VueJS directives:
+v-cloak -->
+v-model --> two-way data binding?
+v-if -->
+v-elseif -->
+v-else -->
+- Vue events:
+v-on:click -->
 
 
 
