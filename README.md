@@ -703,7 +703,7 @@ let canvas2DContextVariable = canvasVariable.getContext('2d');
 
 let colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2']
 
-let x, y, radius;
+let x, y, radius, color;
 const startAngle = 0;
 const endAngle = Math.PI * 2;
 
@@ -740,7 +740,7 @@ let canvas2DContextVariable = canvasVariable.getContext('2d');
 
 let colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2']
 
-let x, y, radius;
+let x, y, radius, color;
 const startAngle = 0;
 const endAngle = Math.PI * 2;
 
@@ -779,7 +779,7 @@ let canvas2DContextVariable = canvasVariable.getContext('2d');
 
 let colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2']
 
-let x, y, radius;
+let x, y, radius, color;
 const startAngle = 0;
 const endAngle = Math.PI * 2;
 
@@ -806,6 +806,135 @@ function resizeCanvas()
     canvasVariable.height = window.innerHeight;
 }
 ```
+
+- Okay, not gonna lie, I want to stop here cause it looks so fun and casual and nice. But, we said bubbles and we are going to create bubbles. Here we go.
+
+- To give the circles a more bubble-y look, instead of setting the `fillStyle` property directly to just one color, we will set it to gradient of colors. To do so, we will first initialize another variable named `gradient` which will be a `CanvasGradient` object we will create using the `.createRadialGradient()` method with our `canvas2DContextVariable` object. Then, we will set our `fillStyle` property equal to our `gradient` variable.:
+```
+let canvasVariable = document.querySelector('canvas');
+
+resizeCanvas();
+
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+
+let colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2']
+
+let x, y, radius, color, gradient;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
+
+for (let i = 0; i < 200; i++)
+{
+    canvas2DContextVariable.beginPath();
+    x = Math.floor(Math.random() * window.innerWidth);
+    y = Math.floor(Math.random() * window.innerHeight);
+    radius = Math.floor(Math.random() * 50) + 10;
+    canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+    color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+    gradient = canvas2DContextVariable.createRadialGradient( , , , , , , );
+    canvas2DContextVariable.fillStyle = gradient;
+    canvas2DContextVariable.fill();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+});
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+```
+
+- The `.createRadialGradient()` method requires 6 arguments i.e. `createRadialGradient(sx, sy, sr, ex, ey, er)`. To understand these, we must understand that a radial gradient is made up of two circles -  a start circle and an end circle. The start circle is where the gradient begins, growing outward in a circular pattern all the way to the end circle. The arguments in the `.createRadialGradient()` method correspond to the coordinates and size of these start and end circles:
+sx ---> x-axis coordinate of the start circle.
+sy ---> y-axis coordinate of the start circle.
+sr ---> radius of the start circle. Must be non-negative and finite.
+ex ---> x-axis coordinate of the start circle.
+ey ---> y-axis coordinate of the start circle.
+er ---> radius of the start circle. Must be non-negative and finite.
+Since we want to give our circles that bubble-y gleam look, we want the gradient to begin slightly toward the left of the circle and grow until its very edge. To achieve this effect, we use the following values in the `.createRadialGradient()` method:
+```
+let canvasVariable = document.querySelector('canvas');
+
+resizeCanvas();
+
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+
+let colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2']
+
+let x, y, radius, color, gradient;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
+
+for (let i = 0; i < 200; i++)
+{
+    canvas2DContextVariable.beginPath();
+    x = Math.floor(Math.random() * window.innerWidth);
+    y = Math.floor(Math.random() * window.innerHeight);
+    radius = Math.floor(Math.random() * 50) + 10;
+    canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+    color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+    gradient = canvas2DContextVariable.createRadialGradient(x - (radius/2), y - (radius/2), 0, x, y, radius);
+    canvas2DContextVariable.fillStyle = gradient;
+    canvas2DContextVariable.fill();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+});
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+```
+
+- At the moment, you will see nothing since we have not defined our gradient colors yet. To do so, we will use the `.addColorStop()` method with our `gradient` object. The `.addColorStop()` method takes two arguments which is the point in the gradient up to which we want the color to show, and the color itself. For example, To give it a nice transition, we are going to use the colors white (with the hexadecimal code `#FFFFFF`) and the `color` variable. The points at which we want these colors to stop were chosen after a lot (A LOT) of trial and error:
+```
+let canvasVariable = document.querySelector('canvas');
+
+resizeCanvas();
+
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+
+let colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2']
+
+let x, y, radius, color, gradient;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
+
+for (let i = 0; i < 200; i++)
+{
+    canvas2DContextVariable.beginPath();
+    x = Math.floor(Math.random() * window.innerWidth);
+    y = Math.floor(Math.random() * window.innerHeight);
+    radius = Math.floor(Math.random() * 50) + 10;
+    canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+    color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+    gradient = canvas2DContextVariable.createRadialGradient(x - (radius/2), y - (radius/2), 0, x, y, radius);
+    gradient.addColorStop(0.2, '#FFFFFF');
+    gradient.addColorStop(1.0, color);
+    canvas2DContextVariable.fillStyle = gradient;
+    canvas2DContextVariable.fill();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+});
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+```
+
 
 
 
