@@ -379,16 +379,16 @@ function changingTheBooleanVariable()
 ```
 <!DOCTYPE html>
 <html>
-<style>
-    canvas
-    {
-        border: 1px solid;
-        background: peachpuff;
-    }
-</style>
 <head>
     <meta charset="UTF-8" />
     <title>Google XYZ</title>
+    <style>
+        canvas
+        {
+            border: 1px solid;
+            background: peachpuff;
+        }
+    </style>
 </head>
 <body>
     <canvas>
@@ -402,21 +402,21 @@ function changingTheBooleanVariable()
 ```
 <!DOCTYPE html>
 <html>
-<style>
-    body
-    {
-        margin: 0;
-    }
-
-    canvas
-    {
-        border: 1px solid;
-        background: peachpuff;
-    }
-</style>
 <head>
     <meta charset="UTF-8" />
     <title>Google XYZ</title>
+    <style>
+        body
+        {
+            margin: 0;
+        }
+
+        canvas
+        {
+            border: 1px solid;
+            background: peachpuff;
+        }
+    </style>
 </head>
 <body>
     <canvas>
@@ -430,23 +430,23 @@ function changingTheBooleanVariable()
 ```
 <!DOCTYPE html>
 <html>
-<style>
-    body
-    {
-        margin: 0;
-    }
-
-    canvas
-    {
-        border: 1px solid;
-        background: peachpuff;
-        width: 100%;
-        height: 100%;
-    }
-</style>
 <head>
     <meta charset="UTF-8" />
     <title>Google XYZ</title>
+    <style>
+        body
+        {
+            margin: 0;
+        }
+
+        canvas
+        {
+            border: 1px solid;
+            background: peachpuff;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
     <canvas>
@@ -460,21 +460,21 @@ function changingTheBooleanVariable()
 ```
 <!DOCTYPE html>
 <html>
-<style>
-    body
-    {
-        margin: 0;
-    }
-
-    canvas
-    {
-        border: 1px solid;
-        background: peachpuff;
-    }
-</style>
 <head>
     <meta charset="UTF-8" />
     <title>Google XYZ</title>
+    <style>
+        body
+        {
+            margin: 0;
+        }
+
+        canvas
+        {
+            border: 1px solid;
+            background: peachpuff;
+        }
+    </style>
 </head>
 <body>
     <canvas>
