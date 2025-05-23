@@ -1216,7 +1216,7 @@ window.addEventListener('resize', function()
 });
 ```
 
-- I have an event listener for the `'resize'` event which I am moving just below my main logic/setup function section:
+- I have an EventListener for the `'resize'` event which I am moving just below my main logic/setup function section:
 ```
 const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
 const totalCircles = 200;
@@ -1262,6 +1262,204 @@ for (let i = 0; i < totalCircles; i++)
 ```
 
 - Finally, this leaves my actual call to the `resizeCanvas()` and for-loop for drawing the circles at the very bottom in the execution section.
+
+- Now that we finally have a structure in place, let's make changes to our code to fix the actual blank screen on first access issue for our webpage. The simple solution to fixing this is to draw the circles everytime the `resizeCanvas()` function is called. To do this, we will first create another function called `drawCircles()` in which we will place all our code related to drawing the circles like so:
+```
+const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
+const totalCircles = 200;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
+
+let canvasVariable = document.querySelector('canvas');
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+let x, y, radius, color, gradient;
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+
+function drawCircles()
+{
+    for (let i = 0; i < totalCircles; i++)
+    {
+        canvas2DContextVariable.beginPath();
+        x = Math.floor(Math.random() * window.innerWidth);
+        y = Math.floor(Math.random() * window.innerHeight);
+        radius = Math.floor(Math.random() * 50) + 10;
+        canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+        color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+        gradient = canvas2DContextVariable.createRadialGradient(x - (radius/2), y - (radius/2), 0, x, y, radius);
+        gradient.addColorStop(0.2, '#FFFFFF');
+        gradient.addColorStop(1.0, color + "CC");
+        canvas2DContextVariable.fillStyle = gradient;
+        canvas2DContextVariable.fill();
+    }
+}
+
+function initializeCanvas()
+{
+    //Leaving empty for now
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+});
+
+resizeCanvas();
+```
+
+- What I think we can also do since the variables and constants `x`, `y`, `radius`, `startAngle`, `endAngle`, `color`, and `gradient` will only be used within the scope of the `drawCircle()` function, I can move them there:
+```
+const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
+const totalCircles = 200;
+
+let canvasVariable = document.querySelector('canvas');
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+
+function drawCircles()
+{
+    let x, y, radius, color, gradient;
+    const startAngle = 0;
+    const endAngle = Math.PI * 2;
+    for (let i = 0; i < totalCircles; i++)
+    {
+        canvas2DContextVariable.beginPath();
+        x = Math.floor(Math.random() * window.innerWidth);
+        y = Math.floor(Math.random() * window.innerHeight);
+        radius = Math.floor(Math.random() * 50) + 10;
+        canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+        color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+        gradient = canvas2DContextVariable.createRadialGradient(x - (radius/2), y - (radius/2), 0, x, y, radius);
+        gradient.addColorStop(0.2, '#FFFFFF');
+        gradient.addColorStop(1.0, color + "CC");
+        canvas2DContextVariable.fillStyle = gradient;
+        canvas2DContextVariable.fill();
+    }
+}
+
+function initializeCanvas()
+{
+    //Leaving empty for now
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+});
+
+resizeCanvas();
+```
+
+- Now I want to make sure that every time the window is resized, the circles are redrawn. To do this, I simply add the `drawCircles()` function inside the EventListener for the `'resize'` event where the `resizeCanvas()` function is already being called:
+```
+const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
+const totalCircles = 200;
+
+let canvasVariable = document.querySelector('canvas');
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+
+function drawCircles()
+{
+    let x, y, radius, color, gradient;
+    const startAngle = 0;
+    const endAngle = Math.PI * 2;
+    for (let i = 0; i < totalCircles; i++)
+    {
+        canvas2DContextVariable.beginPath();
+        x = Math.floor(Math.random() * window.innerWidth);
+        y = Math.floor(Math.random() * window.innerHeight);
+        radius = Math.floor(Math.random() * 50) + 10;
+        canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+        color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+        gradient = canvas2DContextVariable.createRadialGradient(x - (radius/2), y - (radius/2), 0, x, y, radius);
+        gradient.addColorStop(0.2, '#FFFFFF');
+        gradient.addColorStop(1.0, color + "CC");
+        canvas2DContextVariable.fillStyle = gradient;
+        canvas2DContextVariable.fill();
+    }
+}
+
+function initializeCanvas()
+{
+    //Leaving empty for now
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+    drawCircles();
+});
+
+resizeCanvas();
+```
+
+- Now notice that in the execution section, only the `resizeCanvas()` function is being called every time the webpage is first accessed. This means that only after resizing the window will the circles be drawn. Instead of also adding the `drawCircles()` function to the execution section too, we can utilize the `initializeCanvas()` function and call both methods inside it and just add that to the execution section of our file instead. This means that when the webpage is first accessed, the `initializeCanvas()` function will be called, which will in turn call on the `resizeCanvas()` function and then the `drawCircles()` function like so:
+```
+const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
+const totalCircles = 200;
+
+let canvasVariable = document.querySelector('canvas');
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+
+function drawCircles()
+{
+    let x, y, radius, color, gradient;
+    const startAngle = 0;
+    const endAngle = Math.PI * 2;
+    for (let i = 0; i < totalCircles; i++)
+    {
+        canvas2DContextVariable.beginPath();
+        x = Math.floor(Math.random() * window.innerWidth);
+        y = Math.floor(Math.random() * window.innerHeight);
+        radius = Math.floor(Math.random() * 50) + 10;
+        canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+        color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+        gradient = canvas2DContextVariable.createRadialGradient(x - (radius/2), y - (radius/2), 0, x, y, radius);
+        gradient.addColorStop(0.2, '#FFFFFF');
+        gradient.addColorStop(1.0, color + "CC");
+        canvas2DContextVariable.fillStyle = gradient;
+        canvas2DContextVariable.fill();
+    }
+}
+
+function initializeCanvas()
+{
+    resizeCanvas();
+    drawCircles();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+    drawCircles();
+});
+
+initializeCanvas();
+```
+
+- This solves our initial-blank-screen-on-webpage-first-access issue! I am tempted to put the initialize method into the `'resize'` event EventListener but I feel like I should let that be for now in case resize does not always mean re-initialize everything.
+
 
 
 
