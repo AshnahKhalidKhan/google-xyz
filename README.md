@@ -1017,6 +1017,252 @@ function resizeCanvas()
 ```
 THEY'RE SO PRETTY!!!
 
+- Okay so did a little editing. Apparently, it's best practice for the `<style>` tag to be placed inside the `<head>` tag in HTML.
+
+- I have found an issue. When accessing the webpage, the screen stays blank and only after refreshing does it show the circles. To resolve this, I need to refractor the code so that the circles are drawn at the same time as the window is initialized or resized.
+
+- I also went on a tangent to see how to structure JavaScript files to follow best practice and apparently, this is somewhat what the structure should look like so we're going to refractor our existing code on the basis of roughly this:
+```
+// 1. Constants and configuration
+const COLOR_PALETTE = ['#A7F2F2', '#D6C9F2', '#C9B6F2'];
+
+// 2. Global variables
+let canvas, ctx;
+
+// 3. Utility/helper functions
+function resizeCanvas() { ... }
+
+function drawCircle(x, y, radius, color) { ... }
+
+// 4. Main logic or setup function
+function init() {
+  canvas = document.querySelector('canvas');
+  ctx = canvas.getContext('2d');
+  resizeCanvas();
+  drawAllCircles();
+}
+
+// 5. Event listeners
+window.addEventListener('resize', resizeCanvas);
+
+// 6. Kick off execution
+init();
+```
+
+- Okie dokie, starting refractoring now. First, I'm going to move up all my constants. I am also creating an additional constant for the number of circles I want to create called `totalCircles` and I will replace the same value in the for-loop as well:
+```
+const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
+const totalCircles = 200;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
+
+let canvasVariable = document.querySelector('canvas');
+
+resizeCanvas();
+
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+
+let x, y, radius, color, gradient;
+
+for (let i = 0; i < totalCircles; i++)
+{
+    canvas2DContextVariable.beginPath();
+    x = Math.floor(Math.random() * window.innerWidth);
+    y = Math.floor(Math.random() * window.innerHeight);
+    radius = Math.floor(Math.random() * 50) + 10;
+    canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+    color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+    gradient = canvas2DContextVariable.createRadialGradient(x - (radius/2), y - (radius/2), 0, x, y, radius);
+    gradient.addColorStop(0.2, '#FFFFFF');
+    gradient.addColorStop(1.0, color + "CC");
+    canvas2DContextVariable.fillStyle = gradient;
+    canvas2DContextVariable.fill();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+});
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+```
+
+- Now, I will move up my actual variables that I will be using throughout the file a.k.a my 'global' variables:
+```
+const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
+const totalCircles = 200;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
+
+let canvasVariable = document.querySelector('canvas');
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+let x, y, radius, color, gradient;
+
+resizeCanvas();
+
+for (let i = 0; i < totalCircles; i++)
+{
+    canvas2DContextVariable.beginPath();
+    x = Math.floor(Math.random() * window.innerWidth);
+    y = Math.floor(Math.random() * window.innerHeight);
+    radius = Math.floor(Math.random() * 50) + 10;
+    canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+    color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+    gradient = canvas2DContextVariable.createRadialGradient(x - (radius/2), y - (radius/2), 0, x, y, radius);
+    gradient.addColorStop(0.2, '#FFFFFF');
+    gradient.addColorStop(1.0, color + "CC");
+    canvas2DContextVariable.fillStyle = gradient;
+    canvas2DContextVariable.fill();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+});
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+```
+
+- I can see that at this time I only have one utility/helper function which is the `resizeCanvas()` method so I will move that up and below my global variables:
+```
+const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
+const totalCircles = 200;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
+
+let canvasVariable = document.querySelector('canvas');
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+let x, y, radius, color, gradient;
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+
+resizeCanvas();
+
+for (let i = 0; i < totalCircles; i++)
+{
+    canvas2DContextVariable.beginPath();
+    x = Math.floor(Math.random() * window.innerWidth);
+    y = Math.floor(Math.random() * window.innerHeight);
+    radius = Math.floor(Math.random() * 50) + 10;
+    canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+    color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+    gradient = canvas2DContextVariable.createRadialGradient(x - (radius/2), y - (radius/2), 0, x, y, radius);
+    gradient.addColorStop(0.2, '#FFFFFF');
+    gradient.addColorStop(1.0, color + "CC");
+    canvas2DContextVariable.fillStyle = gradient;
+    canvas2DContextVariable.fill();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+});
+```
+
+- My main logic or setup function section (a function that initialized everything in the webpage) does not include anything at the moment because I am including everything in the actual execution part - the drawing of my circles basically. I'll just include an empty function called `initializeCanvas()` for now under my utility/helper function section.
+```
+const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
+const totalCircles = 200;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
+
+let canvasVariable = document.querySelector('canvas');
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+let x, y, radius, color, gradient;
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+
+function initializeCanvas()
+{
+    //Leaving empty for now
+}
+
+resizeCanvas();
+
+for (let i = 0; i < totalCircles; i++)
+{
+    canvas2DContextVariable.beginPath();
+    x = Math.floor(Math.random() * window.innerWidth);
+    y = Math.floor(Math.random() * window.innerHeight);
+    radius = Math.floor(Math.random() * 50) + 10;
+    canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+    color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+    gradient = canvas2DContextVariable.createRadialGradient(x - (radius/2), y - (radius/2), 0, x, y, radius);
+    gradient.addColorStop(0.2, '#FFFFFF');
+    gradient.addColorStop(1.0, color + "CC");
+    canvas2DContextVariable.fillStyle = gradient;
+    canvas2DContextVariable.fill();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+});
+```
+
+- I have an event listener for the `'resize'` event which I am moving just below my main logic/setup function section:
+```
+const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
+const totalCircles = 200;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
+
+let canvasVariable = document.querySelector('canvas');
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+let x, y, radius, color, gradient;
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+
+function initializeCanvas()
+{
+    //Leaving empty for now
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+});
+
+resizeCanvas();
+
+for (let i = 0; i < totalCircles; i++)
+{
+    canvas2DContextVariable.beginPath();
+    x = Math.floor(Math.random() * window.innerWidth);
+    y = Math.floor(Math.random() * window.innerHeight);
+    radius = Math.floor(Math.random() * 50) + 10;
+    canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+    color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+    gradient = canvas2DContextVariable.createRadialGradient(x - (radius/2), y - (radius/2), 0, x, y, radius);
+    gradient.addColorStop(0.2, '#FFFFFF');
+    gradient.addColorStop(1.0, color + "CC");
+    canvas2DContextVariable.fillStyle = gradient;
+    canvas2DContextVariable.fill();
+}
+```
+
+- Finally, this leaves my actual call to the `resizeCanvas()` and for-loop for drawing the circles at the very bottom in the execution section.
+
 
 
 - VueJS directives:

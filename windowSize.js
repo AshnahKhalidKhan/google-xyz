@@ -1,16 +1,31 @@
-let canvasVariable = document.querySelector('canvas');
-
-resizeCanvas();
-
-let canvas2DContextVariable = canvasVariable.getContext('2d');
-
-let colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2']
-
-let x, y, radius, color, gradient;
+const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
+const totalCircles = 200;
 const startAngle = 0;
 const endAngle = Math.PI * 2;
 
-for (let i = 0; i < 200; i++)
+let canvasVariable = document.querySelector('canvas');
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+let x, y, radius, color, gradient;
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+
+function initializeCanvas()
+{
+    //Leaving empty for now
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+});
+
+resizeCanvas();
+
+for (let i = 0; i < totalCircles; i++)
 {
     canvas2DContextVariable.beginPath();
     x = Math.floor(Math.random() * window.innerWidth);
@@ -23,15 +38,4 @@ for (let i = 0; i < 200; i++)
     gradient.addColorStop(1.0, color + "CC");
     canvas2DContextVariable.fillStyle = gradient;
     canvas2DContextVariable.fill();
-}
-
-window.addEventListener('resize', function()
-{
-    resizeCanvas();
-});
-
-function resizeCanvas()
-{
-    canvasVariable.width = window.innerWidth;
-    canvasVariable.height = window.innerHeight;
 }
