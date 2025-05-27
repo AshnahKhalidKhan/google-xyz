@@ -1460,7 +1460,11 @@ initializeCanvas();
 
 - This solves our initial-blank-screen-on-webpage-first-access issue! I am tempted to put the initialize method into the `'resize'` event EventListener but I feel like I should let that be for now in case resize does not always mean re-initialize everything.
 
+- Oooookayyyyyy sooooooooooo... I think I need to install `Node.js` now. Also, I need to go on my resume and fix "NodeJS" with "Node.js" (I like "NodeJS" better). Anyways, this part should be simple. I went to `https://nodejs.org/en/download/` and then downloaded the `.msi` file and ran it. During the installation, I just checked "Entire feature will be installed on local hard drive" the entire time. I hope that was a good decision. Now some PowerShell script is running - very scared I might have broken this computer. I've realized I am afraid of installations in general I guess. Weird. Khair, back to this. Going to have to wait for this PowerShell script to complete running I guess. Whoa, this installation is loooooong. Okay it's complete! But now my device needs to be restarted. Okie dokie, be right back!
 
+- I am back. Just going to quickly check if `Node.js` and `npm` have been installed by running these commands on the Command Prompt:
+`node --version`
+`npm --version`
 
 
 - VueJS directives:
@@ -1486,3 +1490,9 @@ v-on:click -->
 - So. Tried. Of. Arrogant. People. Actually, just arrogant programmers.
 - Sub pagal hain. Sub kay sub pagal hain.
 - I think I lack the basic human decency to do anything. Yup. I am indecent human being altogether.
+- So... I just spent the last 1 hour (I think) figuring out my LinkedIn About section and banner. What a lot of doom-scrollling that was.
+- Also: 'brain rot', 'doom-scrolling', 'vibe coding' — what an abomination of words and terms and states of life. Who even invented these? What happened to normal, sophisticated vocabulary? I hate this generation.
+- Maybe I _should_ get started on Candor. I think it is the perfect project for me, but what tech stack do I choose? I will have to think about this.
+- Dudeeeeeeeeeeeeee, I just started Aletheia on the side. This is going to be an amazing project In Shaa Allah.
+- Just because I am already feeling bad, I'm just going to do a mental count of programming stuff I did not get flawlessly right in the first go just to make myself feel worse at 2:20 am in the morning - that doesn't make sense to you? Well me neither.
+- A new very eccentric thought: always negotiate for higher salary because of how much it mattered how consistently Quaid-e-Azam negotiated for Pakistan's borders and how much he could have affected things if he had won.
