@@ -26,6 +26,21 @@ function Circle(x, y, radius, color, horizontalMovementSpeed, verticalMovementSp
         canvas2DContextVariable.fillStyle = this.gradient;
         canvas2DContextVariable.fill();
     };
+
+    this.moveCircle = function()
+    {
+        if (this.x + this.radius > window.innerWidth || this.x - this.radius < 0)
+        {
+            this.horizontalMovementSpeed = - this.horizontalMovementSpeed;
+        }
+        this.x = this.x + this.horizontalMovementSpeed;
+        if (this.y + this.radius > window.innerHeight || this.y - this.radius < 0)
+        {
+            this.verticalMovementSpeed = - this.verticalMovementSpeed;
+        }
+        this.y = this.y + this.verticalMovementSpeed;
+        this.drawCircle();
+    };
 }
 
 function resizeCanvas()
@@ -37,6 +52,7 @@ function resizeCanvas()
 function drawCircles()
 {
     let x, y, radius, color, horizontalMovementSpeed, verticalMovementSpeed;
+
     for (let i = 0; i < totalCircles; i++)
     {
         x = Math.floor(Math.random() * window.innerWidth);
@@ -55,6 +71,17 @@ function initializeCanvas()
     drawCircles();
 }
 
+
+function animateMovingCircles()
+{
+    requestAnimationFrame(animateMovingCircles);
+    canvas2DContextVariable.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    for (let i = 0; i < circleArray.length; i++)
+    {
+        circleArray[i].moveCircle();
+    }
+}
+
 window.addEventListener('resize', function()
 {
     resizeCanvas();
@@ -62,3 +89,4 @@ window.addEventListener('resize', function()
 });
 
 initializeCanvas();
+animateMovingCircles();

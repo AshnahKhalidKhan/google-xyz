@@ -1466,6 +1466,915 @@ initializeCanvas();
 `node --version`
 `npm --version`
 
+- Cutting back to the moving circles/bubbles frontend again (sorry backend enthusiasts), it's time to add some movement to the bubbles. What this calls for is coding in some animation to our created circles. The idea is to understand that every animation is a frame where the object is moved slightly on an x-y plane. We already know that our created circles can move around if we change their `x` and `y` values, but since these values are created on the go with the circles which are also created on the go, we can't reference them each time we need to change their values. To reference all of them, we need to store them somwhere. Hence, we will now create an array to store a bunch of instance of a custom object (which we will also create) that contain all of these values as attributes. Basic OOP, Ash. You **should** understand this...
+
+- Here we go. We are going to intialize the variable `circleArray` as an empty array that will store all the instances of the custom object that will contain all values related to the circle that we want to create like so:
+```
+const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
+const totalCircles = 200;
+
+let canvasVariable = document.querySelector('canvas');
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+let circleArray = [];
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+
+function drawCircles()
+{
+    let x, y, radius, color, gradient;
+    const startAngle = 0;
+    const endAngle = Math.PI * 2;
+    for (let i = 0; i < totalCircles; i++)
+    {
+        canvas2DContextVariable.beginPath();
+        x = Math.floor(Math.random() * window.innerWidth);
+        y = Math.floor(Math.random() * window.innerHeight);
+        radius = Math.floor(Math.random() * 50) + 10;
+        canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+        color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+        gradient = canvas2DContextVariable.createRadialGradient(x - (radius/2), y - (radius/2), 0, x, y, radius);
+        gradient.addColorStop(0.2, '#FFFFFF');
+        gradient.addColorStop(1.0, color + "CC");
+        canvas2DContextVariable.fillStyle = gradient;
+        canvas2DContextVariable.fill();
+    }
+}
+
+function initializeCanvas()
+{
+    resizeCanvas();
+    drawCircles();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+    drawCircles();
+});
+
+initializeCanvas();
+```
+
+- Next, we will create our custom that will contain all values related to the circle that we want to create. We are naming this object `Circle` and will create it using the following special syntax for function where the name's first letter is capitalized, meaning that it is now initializing a class of objects:
+```
+const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
+const totalCircles = 200;
+
+let canvasVariable = document.querySelector('canvas');
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+let circleArray = [];
+
+function Circle()
+{
+}
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+
+function drawCircles()
+{
+    let x, y, radius, color, gradient;
+    const startAngle = 0;
+    const endAngle = Math.PI * 2;
+    for (let i = 0; i < totalCircles; i++)
+    {
+        canvas2DContextVariable.beginPath();
+        x = Math.floor(Math.random() * window.innerWidth);
+        y = Math.floor(Math.random() * window.innerHeight);
+        radius = Math.floor(Math.random() * 50) + 10;
+        canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+        color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+        gradient = canvas2DContextVariable.createRadialGradient(x - (radius/2), y - (radius/2), 0, x, y, radius);
+        gradient.addColorStop(0.2, '#FFFFFF');
+        gradient.addColorStop(1.0, color + "CC");
+        canvas2DContextVariable.fillStyle = gradient;
+        canvas2DContextVariable.fill();
+    }
+}
+
+function initializeCanvas()
+{
+    resizeCanvas();
+    drawCircles();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+    drawCircles();
+});
+
+initializeCanvas();
+```
+
+- In the arguments of this `Circle` function, take all values are arguments that you would need to persist for the circle no matter what its motion is. This will include the circle's `x`, `y`, `radius` and `color` values that we are using to create the circles using the `.arc()` method. Additionally, this will also include two new arguments: `horizontalMovementSpeed` and `verticalMovementSpeed`. To replicate real-life floating motion, the circles will move both horizontally and vertically at certain speeds, and since these speeds need to be the same across different frames (i.e. we don't want the circle to suddenly start moving faster or slower in any direction each time the frame is updated, but just move smoothly with the same speeds) that means that these will also have to be stored in the object to persist. Once these values have been taken as arguments, we can set the same attributes of the object using the `this.` keyword equal to the given arguments like so:
+```
+const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
+const totalCircles = 200;
+
+let canvasVariable = document.querySelector('canvas');
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+let circleArray = [];
+
+function Circle(x, y, radius, color, horizontalMovementSpeed, verticalMovementSpeed)
+{
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.color = color;
+    this.horizontalMovementSpeed = horizontalMovementSpeed;
+    this.verticalMovementSpeed = verticalMovementSpeed;
+}
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+
+function drawCircles()
+{
+    let x, y, radius, color, gradient;
+    const startAngle = 0;
+    const endAngle = Math.PI * 2;
+    for (let i = 0; i < totalCircles; i++)
+    {
+        canvas2DContextVariable.beginPath();
+        x = Math.floor(Math.random() * window.innerWidth);
+        y = Math.floor(Math.random() * window.innerHeight);
+        radius = Math.floor(Math.random() * 50) + 10;
+        canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+        color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+        gradient = canvas2DContextVariable.createRadialGradient(x - (radius/2), y - (radius/2), 0, x, y, radius);
+        gradient.addColorStop(0.2, '#FFFFFF');
+        gradient.addColorStop(1.0, color + "CC");
+        canvas2DContextVariable.fillStyle = gradient;
+        canvas2DContextVariable.fill();
+    }
+}
+
+function initializeCanvas()
+{
+    resizeCanvas();
+    drawCircles();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+    drawCircles();
+});
+
+initializeCanvas();
+```
+
+- Now, we need to initialize and add these `Circle` objects into our `circleArray` array. To do so, we need to modify the `drawCircles()` function. First, we will declare variables for `horizontalMovementSpeed` and `verticalMovementSpeed` since we will be needing these are arguments to create our `Circle` object, and initialize them with values between -0.5 and 0.5 (where negative values correspond to leftward/downward movement speed and positive values correspond to rightward/upward movement speeds; think of x-y planes) using the line `Math.random() - 0.5`:
+```
+const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
+const totalCircles = 200;
+
+let canvasVariable = document.querySelector('canvas');
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+let circleArray = [];
+
+function Circle(x, y, radius, color, horizontalMovementSpeed, verticalMovementSpeed)
+{
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.color = color;
+    this.horizontalMovementSpeed = horizontalMovementSpeed;
+    this.verticalMovementSpeed = verticalMovementSpeed;
+}
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+
+function drawCircles()
+{
+    let x, y, radius, color, gradient, horizontalMovementSpeed, verticalMovementSpeed;
+    const startAngle = 0;
+    const endAngle = Math.PI * 2;
+    for (let i = 0; i < totalCircles; i++)
+    {
+        canvas2DContextVariable.beginPath();
+        x = Math.floor(Math.random() * window.innerWidth);
+        y = Math.floor(Math.random() * window.innerHeight);
+        radius = Math.floor(Math.random() * 50) + 10;
+        canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+        color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+        gradient = canvas2DContextVariable.createRadialGradient(x - (radius/2), y - (radius/2), 0, x, y, radius);
+        gradient.addColorStop(0.2, '#FFFFFF');
+        gradient.addColorStop(1.0, color + "CC");
+        canvas2DContextVariable.fillStyle = gradient;
+        canvas2DContextVariable.fill();
+        horizontalMovementSpeed = Math.random() - 0.5;
+        verticalMovementSpeed = Math.random() - 0.5;
+    }
+}
+
+function initializeCanvas()
+{
+    resizeCanvas();
+    drawCircles();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+    drawCircles();
+});
+
+initializeCanvas();
+```
+Next, we create a new instance of the `Circle` object using the `new` keyword, enter arguments for `x`, `y`, `radius`, `color`, `horizontalMovementSpeed` and `verticalMovementSpeed` into it, and add this newly created instance of the object into the `circleArray` array using the `.push()` method like so:
+```
+const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
+const totalCircles = 200;
+
+let canvasVariable = document.querySelector('canvas');
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+let circleArray = [];
+
+function Circle(x, y, radius, color, horizontalMovementSpeed, verticalMovementSpeed)
+{
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.color = color;
+    this.horizontalMovementSpeed = horizontalMovementSpeed;
+    this.verticalMovementSpeed = verticalMovementSpeed;
+}
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+
+function drawCircles()
+{
+    let x, y, radius, color, gradient, horizontalMovementSpeed, verticalMovementSpeed;
+    const startAngle = 0;
+    const endAngle = Math.PI * 2;
+    for (let i = 0; i < totalCircles; i++)
+    {
+        canvas2DContextVariable.beginPath();
+        x = Math.floor(Math.random() * window.innerWidth);
+        y = Math.floor(Math.random() * window.innerHeight);
+        radius = Math.floor(Math.random() * 50) + 10;
+        canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+        color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+        gradient = canvas2DContextVariable.createRadialGradient(x - (radius/2), y - (radius/2), 0, x, y, radius);
+        gradient.addColorStop(0.2, '#FFFFFF');
+        gradient.addColorStop(1.0, color + "CC");
+        canvas2DContextVariable.fillStyle = gradient;
+        canvas2DContextVariable.fill();
+        horizontalMovementSpeed = Math.random() - 0.5;
+        verticalMovementSpeed = Math.random() - 0.5;
+        circleArray.push(new Circle(x, y, radius, color, horizontalMovementSpeed, verticalMovementSpeed));
+    }
+}
+
+function initializeCanvas()
+{
+    resizeCanvas();
+    drawCircles();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+    drawCircles();
+});
+
+initializeCanvas();
+```
+
+- Now that we have all values stored in the `circleArray` array, we must use them to actually create the circles. To do so, we will create a `.drawCircle()` method for the `Circle` object. We can declare this method like so:
+```
+const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
+const totalCircles = 200;
+
+let canvasVariable = document.querySelector('canvas');
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+let circleArray = [];
+
+function Circle(x, y, radius, color, horizontalMovementSpeed, verticalMovementSpeed)
+{
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.color = color;
+    this.horizontalMovementSpeed = horizontalMovementSpeed;
+    this.verticalMovementSpeed = verticalMovementSpeed;
+
+    this.drawCircle = function()
+    {
+    };
+}
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+
+function drawCircles()
+{
+    let x, y, radius, color, gradient, horizontalMovementSpeed, verticalMovementSpeed;
+    const startAngle = 0;
+    const endAngle = Math.PI * 2;
+    for (let i = 0; i < totalCircles; i++)
+    {
+        canvas2DContextVariable.beginPath();
+        x = Math.floor(Math.random() * window.innerWidth);
+        y = Math.floor(Math.random() * window.innerHeight);
+        radius = Math.floor(Math.random() * 50) + 10;
+        canvas2DContextVariable.arc(x, y, radius, startAngle, endAngle);
+        color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+        gradient = canvas2DContextVariable.createRadialGradient(x - (radius/2), y - (radius/2), 0, x, y, radius);
+        gradient.addColorStop(0.2, '#FFFFFF');
+        gradient.addColorStop(1.0, color + "CC");
+        canvas2DContextVariable.fillStyle = gradient;
+        canvas2DContextVariable.fill();
+        horizontalMovementSpeed = Math.random() - 0.5;
+        verticalMovementSpeed = Math.random() - 0.5;
+        circleArray.push(new Circle(x, y, radius, color, horizontalMovementSpeed, verticalMovementSpeed));
+    }
+}
+
+function initializeCanvas()
+{
+    resizeCanvas();
+    drawCircles();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+    drawCircles();
+});
+
+initializeCanvas();
+```
+Then we will move our code for drawing the arc using the `.arc()` method, and all other styling features for its gradient inside the `.drawCircle()` method making sure that for each of the variables used in those lines of code, we add a `this.` keyword before each of them except `startAngle` and `endAngle`:
+```
+const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
+const totalCircles = 200;
+
+let canvasVariable = document.querySelector('canvas');
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+let circleArray = [];
+
+function Circle(x, y, radius, color, horizontalMovementSpeed, verticalMovementSpeed)
+{
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.color = color;
+    this.horizontalMovementSpeed = horizontalMovementSpeed;
+    this.verticalMovementSpeed = verticalMovementSpeed;
+
+    this.drawCircle = function()
+    {
+        canvas2DContextVariable.beginPath();
+        canvas2DContextVariable.arc(this.x, this.y, this.radius, startAngle, endAngle);
+        this.gradient = canvas2DContextVariable.createRadialGradient(this.x - (this.radius/2), this.y - (this.radius/2), 0, this.x, this.y, this.radius);
+        this.gradient.addColorStop(0.2, '#FFFFFF');
+        this.gradient.addColorStop(1.0, this.color + "CC");
+        canvas2DContextVariable.fillStyle = this.gradient;
+        canvas2DContextVariable.fill();
+    };
+}
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+
+function drawCircles()
+{
+    let x, y, radius, color, gradient, horizontalMovementSpeed, verticalMovementSpeed;
+    const startAngle = 0;
+    const endAngle = Math.PI * 2;
+    for (let i = 0; i < totalCircles; i++)
+    {
+        x = Math.floor(Math.random() * window.innerWidth);
+        y = Math.floor(Math.random() * window.innerHeight);
+        radius = Math.floor(Math.random() * 50) + 10;
+        color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+        horizontalMovementSpeed = Math.random() - 0.5;
+        verticalMovementSpeed = Math.random() - 0.5;
+        circleArray.push(new Circle(x, y, radius, color, horizontalMovementSpeed, verticalMovementSpeed));
+    }
+}
+
+function initializeCanvas()
+{
+    resizeCanvas();
+    drawCircles();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+    drawCircles();
+});
+
+initializeCanvas();
+```
+Time for some cleanup. Since we understand that the `startAngle` and `endAngle` variables values for each of the circles will be the same, we will create global constants for these two variables and remove them from our `drawCircles()` function. In addition, since there is no longer any `gradient` variable being used in the `drawCircles()` function either, we will remove that from there too:
+```
+const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
+const totalCircles = 200;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
+
+let canvasVariable = document.querySelector('canvas');
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+let circleArray = [];
+
+function Circle(x, y, radius, color, horizontalMovementSpeed, verticalMovementSpeed)
+{
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.color = color;
+    this.horizontalMovementSpeed = horizontalMovementSpeed;
+    this.verticalMovementSpeed = verticalMovementSpeed;
+
+    this.drawCircle = function()
+    {
+        canvas2DContextVariable.beginPath();
+        canvas2DContextVariable.arc(this.x, this.y, this.radius, startAngle, endAngle);
+        this.gradient = canvas2DContextVariable.createRadialGradient(this.x - (this.radius/2), this.y - (this.radius/2), 0, this.x, this.y, this.radius);
+        this.gradient.addColorStop(0.2, '#FFFFFF');
+        this.gradient.addColorStop(1.0, this.color + "CC");
+        canvas2DContextVariable.fillStyle = this.gradient;
+        canvas2DContextVariable.fill();
+    };
+}
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+
+function drawCircles()
+{
+    let x, y, radius, color, horizontalMovementSpeed, verticalMovementSpeed;
+    for (let i = 0; i < totalCircles; i++)
+    {
+        x = Math.floor(Math.random() * window.innerWidth);
+        y = Math.floor(Math.random() * window.innerHeight);
+        radius = Math.floor(Math.random() * 50) + 10;
+        color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+        horizontalMovementSpeed = Math.random() - 0.5;
+        verticalMovementSpeed = Math.random() - 0.5;
+        circleArray.push(new Circle(x, y, radius, color, horizontalMovementSpeed, verticalMovementSpeed));
+    }
+}
+
+function initializeCanvas()
+{
+    resizeCanvas();
+    drawCircles();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+    drawCircles();
+});
+
+initializeCanvas();
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- Okay dude, enough is enough. I am going to sit down and I am going to understand `v-for` VueJS directives even if it's the last thing thing I do. Bring. It. On.
+
+- The idea of the `v-for` VueJS directive is to render lists of objects. Now whenever we talk about lists, we usually mean arrays so we are talking about listing arrays using `v-for` basically. I am going to demonstrate this in steps (so I can understand as I go too mostly). Going to start by creating an array `originalArray` which has an `id` and `text` value - the `id` is incremented using an `id` variable:
+```
+<script setup>
+import { ref } from 'vue';
+
+let id = 0;
+const originalArray = ref
+([
+    {
+        id: id++,
+        text: 'This is the first array item'
+    },
+    {
+        id: id++,
+        text: 'This is the second array item'
+    },
+    {
+        id: id++,
+        text: 'This is the third array item'
+    }
+])
+</script>
+```
+To render the array items, I will declare the `<template>` section and create a `<ul>` element inside it. Inside the `<ul>` element, I will create a `<li>` element and in this, I will use the `v-for` VueJS directive. The `v-for` directive requires an array to iterate over, an alias to refer to the items in the array while it is iterating over them, and a key to bind to a unique value in each item in the array to identify each item so Vue can correctly reuse, update, or remove DOM elements during re-renders. The syntax it follows to do so is `v-for="(arrayItem) in originalArray" v-bind:key="arrayItem.id"` as shown below. Over here, the array we are iterating over is `originalaArray`, the alias used for iterating over the items in the array is `arrayItem` and the key the `v-for` directive is bound to is the `id` value of each item in the array:
+```
+<script setup>
+import { ref } from 'vue';
+
+let id = 0;
+const originalArray = ref
+([
+    {
+        id: id++,
+        text: 'This is the first array item'
+    },
+    {
+        id: id++,
+        text: 'This is the second array item'
+    },
+    {
+        id: id++,
+        text: 'This is the third array item'
+    }
+])
+</script>
+
+<template>
+    <ul>
+        <li v-for="(arrayItem) in originalArray" v-bind:key="arrayItem.id">
+            ID: {{ arrayItem.id }}, Text: {{ arrayItem.text }}
+        </li>
+    </ul>
+</template>
+```
+We can also display the index of items in the array similarly by using an alias for the index for the array items as well and changing the `v-for` directive syntax to `v-for="(arrayItem, arrayItemIndex) in originalArray"`:
+```
+<script setup>
+import { ref } from 'vue';
+
+let id = 0;
+const originalArray = ref
+([
+    {
+        id: id++,
+        text: 'This is the first array item'
+    },
+    {
+        id: id++,
+        text: 'This is the second array item'
+    },
+    {
+        id: id++,
+        text: 'This is the third array item'
+    }
+])
+</script>
+
+<template>
+    <ul>
+        <li v-for="(arrayItem, arrayItemIndex) in originalArray" v-bind:key="arrayItem.id">
+            ID: {{ arrayItem.id }}, Text: {{ arrayItem.text }}, Index: {{arrayItemIndex}}
+        </li>
+    </ul>
+</template>
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- I am going to place the code here and then explain its lines one by one:
+```
+<script setup>
+import { ref } from 'vue';
+
+// give each arrayItem a unique id
+let id = 0;
+
+const newArray = ref('')
+const originalArray = ref
+([
+    {
+        id: id++,
+        text: 'This is the first array item'
+    },
+    {
+        id: id++,
+        text: 'This is the second array item'
+    },
+    {
+        id: id++,
+        text: 'This is the third array item'
+    }
+])
+
+function addItemToArray()
+{
+    originalArray.value.push
+    ({
+        id: id++,
+        text: newArray.value
+    });
+    newArray.value = '';
+}
+
+function removeItemFromArray(arrayItemToRemove)
+{
+    originalArray.value = originalArray.value.filter((t) => t !== arrayItemToRemove);
+}
+</script>
+
+<template>
+    <form v-on:submit.prevent="addItemToArray">
+        <input v-model="newArray" required>
+        <button>
+            Add Item
+        </button>
+    </form>
+    <ul>
+        <li v-for="(arrayItem, arrayItemIndex) in originalArray" v-bind:key="arrayItem.id">
+            ID: {{ arrayItem.id }}, Text: {{ arrayItem.text }}, Index: {{arrayItemIndex}}
+            <button v-on:click="removeItemFromArray(arrayItem)">
+                Delete Item
+            </button>
+        </li>
+    </ul>
+</template>
+```
+
 
 - VueJS directives:
 v-cloak -->
@@ -1496,3 +2405,13 @@ v-on:click -->
 - Dudeeeeeeeeeeeeee, I just started Aletheia on the side. This is going to be an amazing project In Shaa Allah.
 - Just because I am already feeling bad, I'm just going to do a mental count of programming stuff I did not get flawlessly right in the first go just to make myself feel worse at 2:20 am in the morning - that doesn't make sense to you? Well me neither.
 - A new very eccentric thought: always negotiate for higher salary because of how much it mattered how consistently Quaid-e-Azam negotiated for Pakistan's borders and how much he could have affected things if he had won.
+- I don't think it is healthy how okay I am with no one loving me. I _think_ this is how serial killers are made.
+- Yeah, I miss my Quantum-first-time-boba-drinking... friends.
+- I am not able to concentrate, I realize. Some days, it is just impossible for me to word a simple thought out. It is making things difficult at work. Maybe I should see a doctor. I hate doctors so much... No amount of education will make me like a doctor. Snobs. Ugh, but my sister is a doctor.
+- Maybe life has a way of taking the people we have hurt away from us. Maybe last year was a lesson in that sense.
+- Wow. People actually mistake naivety for dumbness. I've got this world wrapped around my fingers lol.
+- They say that everyone dies alone. I am pretty sure that I will also live alone.
+- It's funny how your code working can shift your whole worldview around. Dare I say, I am even slightly happy today.
+- None of this is making the final cut. What a shame.
+- All I ever wanted was to spread a soft linen sheet over the cool grass in the football ground, lie down and face the perfectly blue, windy sky in the evening after getting back from the masjid after Asr, and watch the sunset in silence in the heartwarming company of a good friend. The irony is that there were so many good people, so, so many, and yet no real friends. Four years and nothing like this. Not even one time. Six years and nothing like this. Nine years and nothing like this. Eighteen years and nothing like this. A whole life and yet, nothing like this... Grass, company, silence, sunsets.
+- 
