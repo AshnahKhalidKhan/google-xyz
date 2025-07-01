@@ -1963,16 +1963,326 @@ window.addEventListener('resize', function()
 initializeCanvas();
 ```
 
+- Eventhough we have defined the `.drawCircle()` method, we won't actually be able to see any circles since we are not really calling it inside the `.drawCircles()` function anywhere; we're just __creating__ the `Circle` objects.
 
+- An important thing to note here is the idea of understanding that every time that we want the circle (bubble) to move horizontally or vertically, we are taking the same circle and re-drawing it with an updated `x` or `y` value. So moving the circle means calling the `.drawCircle()` method again and again with updated values on the same `Circle` object. This is basically the gist of animation too and helps us set the scene to introduce the `window.requestAnimationFrame()` method.
 
+- The `window.requestAnimationFrame()` built-in method basically allows us to create a new 'frame' of drawings that when put a top of each other, create the illusion of motion. This is similar to how a flip-book animation works in real life.
 
+- The way to use the `window.requestAnimationFrame()` method is to create a function which calls the `window.requestAnimationFrame()` method on itself like something similar to the following:
+```
+function animateMovingCircles()
+{
+    window.requestAnimationFrame(animateMovingCircles);
+    // Rest of the function body...
+}
+```
+What this does is create a loop in which every time the page or `canvas` is 'refreshed', the `animateMovingCircles()` function is called again to create a new 'frame'. This is kind of difficult to understand, I know.
 
+- To incorporate the actual moving circle animation part into our code, let's take things step by step. First, we need a code that actually changes the `x` and `y` values of the `Circle` object according to the `horizontalMovementSpeed` and `verticalMovementSpeed` assigned to it. For this, we create the `.moveCircle()` method in the `Circle` object just like the `.drawCircle()` method like below. The basic explanation of the code is that you increment the `Circle`'s `x` value by the `horizontalMovementSpeed` and the `y` value by the `verticalMovementSpeed` value every time this method is called, and then re-draw the new `Circle` with these updated values by calling the `.drawCircle()` method again. Since the `horizontalMovementSpeed` and `verticalMovementSpeed` values can also be negative, and greater than the horizontal and vertical lengths of the window, which would make the circles go out of the window and not be seen, the `if` statements have been put in place. The reason the `+/- this.radius` has been added to the `if` statements is because a circle reaching or created on the very border would not update its `x` and `y` values otherwise and remain stuck there:
+```
+const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
+const totalCircles = 200;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
 
+let canvasVariable = document.querySelector('canvas');
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+let circleArray = [];
 
+function Circle(x, y, radius, color, horizontalMovementSpeed, verticalMovementSpeed)
+{
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.color = color;
+    this.horizontalMovementSpeed = horizontalMovementSpeed;
+    this.verticalMovementSpeed = verticalMovementSpeed;
 
+    this.drawCircle = function()
+    {
+        canvas2DContextVariable.beginPath();
+        canvas2DContextVariable.arc(this.x, this.y, this.radius, startAngle, endAngle);
+        this.gradient = canvas2DContextVariable.createRadialGradient(this.x - (this.radius/2), this.y - (this.radius/2), 0, this.x, this.y, this.radius);
+        this.gradient.addColorStop(0.2, '#FFFFFF');
+        this.gradient.addColorStop(1.0, this.color + "CC");
+        canvas2DContextVariable.fillStyle = this.gradient;
+        canvas2DContextVariable.fill();
+    };
 
+    this.moveCircle = function()
+    {
+        if (this.x + this.radius > window.innerWidth || this.x - this.radius < 0)
+        {
+            this.horizontalMovementSpeed = - this.horizontalMovementSpeed;
+        }
+        this.x = this.x + this.horizontalMovementSpeed;
+        if (this.y + this.radius > window.innerHeight || this.y - this.radius < 0)
+        {
+            this.verticalMovementSpeed = - this.verticalMovementSpeed;
+        }
+        this.y = this.y + this.verticalMovementSpeed;
+        this.drawCircle();
+    };
+}
 
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
 
+function drawCircles()
+{
+    let x, y, radius, color, horizontalMovementSpeed, verticalMovementSpeed;
+    for (let i = 0; i < totalCircles; i++)
+    {
+        x = Math.floor(Math.random() * window.innerWidth);
+        y = Math.floor(Math.random() * window.innerHeight);
+        radius = Math.floor(Math.random() * 50) + 10;
+        color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+        horizontalMovementSpeed = Math.random() - 0.5;
+        verticalMovementSpeed = Math.random() - 0.5;
+        circleArray.push(new Circle(x, y, radius, color, horizontalMovementSpeed, verticalMovementSpeed));
+    }
+}
+
+function initializeCanvas()
+{
+    resizeCanvas();
+    drawCircles();
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+    drawCircles();
+});
+
+initializeCanvas();
+```
+Again, eventhough we have also defined the `.moveCircle()` method, we won't actually be able to see any circles or any moving circles since we are not really calling it inside the `.drawCircles()` function or anywhere else. In fact, since we want the `Circle` object to move in each frame, we need to call this function every time the new frame is being created (i.e. the `canvas` is being refreshed). To do so, we create the `animateMovingCircles()` function which calls the `window.requestAnimationFrame()` method that provides us all these frames, and call the `.moveCircle()` method inside it for all `Circle` objects we have created and stored in our `circleArray` array which we can reference using a simple for-loop. Additionally, we need to call the `animateMovingCircles()` function at the very bottom of our code as well:
+```
+const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
+const totalCircles = 200;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
+
+let canvasVariable = document.querySelector('canvas');
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+let circleArray = [];
+
+function Circle(x, y, radius, color, horizontalMovementSpeed, verticalMovementSpeed)
+{
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.color = color;
+    this.horizontalMovementSpeed = horizontalMovementSpeed;
+    this.verticalMovementSpeed = verticalMovementSpeed;
+
+    this.drawCircle = function()
+    {
+        canvas2DContextVariable.beginPath();
+        canvas2DContextVariable.arc(this.x, this.y, this.radius, startAngle, endAngle);
+        this.gradient = canvas2DContextVariable.createRadialGradient(this.x - (this.radius/2), this.y - (this.radius/2), 0, this.x, this.y, this.radius);
+        this.gradient.addColorStop(0.2, '#FFFFFF');
+        this.gradient.addColorStop(1.0, this.color + "CC");
+        canvas2DContextVariable.fillStyle = this.gradient;
+        canvas2DContextVariable.fill();
+    };
+
+    this.moveCircle = function()
+    {
+        if (this.x + this.radius > window.innerWidth || this.x - this.radius < 0)
+        {
+            this.horizontalMovementSpeed = - this.horizontalMovementSpeed;
+        }
+        this.x = this.x + this.horizontalMovementSpeed;
+        if (this.y + this.radius > window.innerHeight || this.y - this.radius < 0)
+        {
+            this.verticalMovementSpeed = - this.verticalMovementSpeed;
+        }
+        this.y = this.y + this.verticalMovementSpeed;
+        this.drawCircle();
+    };
+}
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+
+function drawCircles()
+{
+    let x, y, radius, color, horizontalMovementSpeed, verticalMovementSpeed;
+    for (let i = 0; i < totalCircles; i++)
+    {
+        x = Math.floor(Math.random() * window.innerWidth);
+        y = Math.floor(Math.random() * window.innerHeight);
+        radius = Math.floor(Math.random() * 50) + 10;
+        color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+        horizontalMovementSpeed = Math.random() - 0.5;
+        verticalMovementSpeed = Math.random() - 0.5;
+        circleArray.push(new Circle(x, y, radius, color, horizontalMovementSpeed, verticalMovementSpeed));
+    }
+}
+
+function initializeCanvas()
+{
+    resizeCanvas();
+    drawCircles();
+}
+
+function animateMovingCircles()
+{
+    window.requestAnimationFrame(animateMovingCircles);
+    for (let i = 0; i < circleArray.length; i++)
+    {
+        circleArray[i].moveCircle();
+    }
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+    drawCircles();
+});
+
+initializeCanvas();
+animateMovingCircles();
+```
+If you look at the current `canvas` now, you will see all of the circles in motion in a really cool fun way which seems quite artistic on its own. The circles basically leave a trail behind of their previous position which looks cool, but isn't what we ideally need. This is because the `canvas`'s context needs to be cleared each time a new frame is made when the position of the `Circle` object changes. To do so, we use the `.clearRect()` method for the `canvas2DContextVariable` object. As arguments, this function requires the coordinates of the entire area to be cleared - in our case, that is the whole window. To incorporate this, we simply add that to our `animateMovingCircles()` function code right below the `window.requestAnimationFrame()` method like so:
+```
+const colorPalette = ['#A7F2F2', '#D6C9F2', '#C9B6F2', '#EDC9F2', '#F1A7F2'];
+const totalCircles = 200;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
+
+let canvasVariable = document.querySelector('canvas');
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+let circleArray = [];
+
+function Circle(x, y, radius, color, horizontalMovementSpeed, verticalMovementSpeed)
+{
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.color = color;
+    this.horizontalMovementSpeed = horizontalMovementSpeed;
+    this.verticalMovementSpeed = verticalMovementSpeed;
+
+    this.drawCircle = function()
+    {
+        canvas2DContextVariable.beginPath();
+        canvas2DContextVariable.arc(this.x, this.y, this.radius, startAngle, endAngle);
+        this.gradient = canvas2DContextVariable.createRadialGradient(this.x - (this.radius/2), this.y - (this.radius/2), 0, this.x, this.y, this.radius);
+        this.gradient.addColorStop(0.2, '#FFFFFF');
+        this.gradient.addColorStop(1.0, this.color + "CC");
+        canvas2DContextVariable.fillStyle = this.gradient;
+        canvas2DContextVariable.fill();
+    };
+
+    this.moveCircle = function()
+    {
+        if (this.x + this.radius > window.innerWidth || this.x - this.radius < 0)
+        {
+            this.horizontalMovementSpeed = - this.horizontalMovementSpeed;
+        }
+        this.x = this.x + this.horizontalMovementSpeed;
+        if (this.y + this.radius > window.innerHeight || this.y - this.radius < 0)
+        {
+            this.verticalMovementSpeed = - this.verticalMovementSpeed;
+        }
+        this.y = this.y + this.verticalMovementSpeed;
+        this.drawCircle();
+    };
+}
+
+function resizeCanvas()
+{
+    canvasVariable.width = window.innerWidth;
+    canvasVariable.height = window.innerHeight;
+}
+
+function drawCircles()
+{
+    let x, y, radius, color, horizontalMovementSpeed, verticalMovementSpeed;
+    for (let i = 0; i < totalCircles; i++)
+    {
+        x = Math.floor(Math.random() * window.innerWidth);
+        y = Math.floor(Math.random() * window.innerHeight);
+        radius = Math.floor(Math.random() * 50) + 10;
+        color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+        horizontalMovementSpeed = Math.random() - 0.5;
+        verticalMovementSpeed = Math.random() - 0.5;
+        circleArray.push(new Circle(x, y, radius, color, horizontalMovementSpeed, verticalMovementSpeed));
+    }
+}
+
+function initializeCanvas()
+{
+    resizeCanvas();
+    drawCircles();
+}
+
+function animateMovingCircles()
+{
+    window.requestAnimationFrame(animateMovingCircles);
+    canvas2DContextVariable.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    for (let i = 0; i < circleArray.length; i++)
+    {
+        circleArray[i].moveCircle();
+    }
+}
+
+window.addEventListener('resize', function()
+{
+    resizeCanvas();
+    drawCircles();
+});
+
+initializeCanvas();
+animateMovingCircles();
+```
+Voila! It looks beautiful.
+
+- Let's see if we need a little refractoring just to be safe too. Well, the order suggested by ChatGPT looks like this:
+```
+// 1. Constants
+const colorPalette = [...];
+const totalCircles = 200;
+const startAngle = 0;
+const endAngle = Math.PI * 2;
+
+// 2. Canvas and global state
+let canvasVariable = document.querySelector('canvas');
+let canvas2DContextVariable = canvasVariable.getContext('2d');
+let circleArray = [];
+
+// 3. Classes / constructor functions
+function Circle(...) { ... }
+
+// 4. Helper functions
+function resizeCanvas() { ... }
+function drawCircles() { ... }
+
+// 5. Initialization logic
+function initializeCanvas() { ... }
+function animateMovingCircles() { ... }
+
+// 6. Event listeners
+window.addEventListener('resize', function() {
+    resizeCanvas();
+    drawCircles();
+});
+
+// 7. Program entry
+initializeCanvas();
+animateMovingCircles();
+```
+I guess we're good. (Woohoooooooo!)
 
 
 
